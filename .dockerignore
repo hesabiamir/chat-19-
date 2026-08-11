@@ -15,6 +15,8 @@ venv
 *.log
 docs
 e2e
+builtin_sources
+builtin_sources.bundle.zip
 test_*.py
 validate_frontend.py
 requirements-dev.txt

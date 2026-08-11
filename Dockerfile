@@ -24,10 +24,12 @@ COPY ./requirements.lock.txt ./requirements.lock.txt
 RUN python -m pip install --no-cache-dir --prefer-binary --only-binary=:all: --timeout 180 --retries 12 -r ./requirements.lock.txt \
     && python -m pip check
 
-COPY ./main.py ./ui_templates.py ./rag_engine.py ./deep_rag.py ./release_info.py ./source_quality.py ./provider_runtime.py ./runtime_guards.py ./ops_runtime.py ./ui_components.py ./barsan_cargo.py ./barsan_location.py ./railway_start.py ./FAQ_TEMPLATE.csv ./thinking_loader.mp4 ./
-COPY ./builtin_sources/ ./builtin_sources/
+COPY ./main.py ./ui_templates.py ./rag_engine.py ./deep_rag.py ./release_info.py ./source_quality.py ./provider_runtime.py ./runtime_guards.py ./ops_runtime.py ./ui_components.py ./barsan_cargo.py ./barsan_location.py ./railway_start.py ./install_builtin_sources.py ./FAQ_TEMPLATE.csv ./thinking_loader.mp4 ./
+COPY ./builtin_sources.bundle.part01 ./builtin_sources.bundle.part02 ./builtin_sources.bundle.part03 ./builtin_sources.bundle.part04 ./builtin_sources.bundle.part05 ./builtin_sources.bundle.part06 ./builtin_sources.bundle.part07 ./builtin_sources.bundle.part08 ./builtin_sources.bundle.part09 ./
 
-RUN python -Werror -m py_compile /app/main.py /app/ui_templates.py /app/rag_engine.py /app/deep_rag.py /app/release_info.py /app/source_quality.py /app/provider_runtime.py /app/runtime_guards.py /app/ops_runtime.py /app/ui_components.py /app/barsan_cargo.py /app/barsan_location.py /app/railway_start.py \
+RUN python /app/install_builtin_sources.py /app/builtin_sources /app/builtin_sources.bundle.part01 /app/builtin_sources.bundle.part02 /app/builtin_sources.bundle.part03 /app/builtin_sources.bundle.part04 /app/builtin_sources.bundle.part05 /app/builtin_sources.bundle.part06 /app/builtin_sources.bundle.part07 /app/builtin_sources.bundle.part08 /app/builtin_sources.bundle.part09 \
+    && rm /app/builtin_sources.bundle.part01 /app/builtin_sources.bundle.part02 /app/builtin_sources.bundle.part03 /app/builtin_sources.bundle.part04 /app/builtin_sources.bundle.part05 /app/builtin_sources.bundle.part06 /app/builtin_sources.bundle.part07 /app/builtin_sources.bundle.part08 /app/builtin_sources.bundle.part09 \
+    && python -Werror -m py_compile /app/main.py /app/ui_templates.py /app/rag_engine.py /app/deep_rag.py /app/release_info.py /app/source_quality.py /app/provider_runtime.py /app/runtime_guards.py /app/ops_runtime.py /app/ui_components.py /app/barsan_cargo.py /app/barsan_location.py /app/railway_start.py /app/install_builtin_sources.py \
     && mkdir -p /data/uploads /data/upload-sessions /data/backups \
     && chown -R 10001:10001 /app /data \
     && chmod 0700 /data /data/uploads /data/upload-sessions /data/backups \

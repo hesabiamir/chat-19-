@@ -16,4 +16,6 @@ BARSAN R35.2.3 — Final Audited Changes
 14) .env.example با هر 267 متغیر محیطی استفاده‌شده در کد تطبیق داده شد.
 15) تست‌های خودکار برای تمام مبداهای COPY، lock، builder، launcher، PORT، Volume، proxy، health و secret اضافه شد.
 16) Release Gate شامل compile، regression، lint، security، browser، Docker build و container smoke است.
-
+17) پس از مشاهدهٔ Build Context آنلاین 344KB، تمام وابستگی Docker به زیرپوشه‌ها حذف شد.
+18) منابع داخلی به سه فایل root با اندازهٔ کمتر از 25MB تقسیم شدند تا GitHub Web Upload آن‌ها را بپذیرد.
+19) install_builtin_sources.py صحت هر قطعه، bundle ترکیبی و هر شش فایل استخراج‌شده را با SHA-256 کنترل می‌کند.

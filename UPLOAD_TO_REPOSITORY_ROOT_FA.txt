@@ -1,8 +1,8 @@
 روش صحیح آپلود
 
 1) ZIP را باز کنید.
-2) همهٔ فایل‌های داخل آن را انتخاب کنید.
-3) فایل‌ها را مستقیماً در ریشهٔ repository قرار دهید.
+2) همهٔ فایل‌های داخل آن را انتخاب کنید؛ هیچ پوشه‌ای در ZIP وجود ندارد.
+3) در GitHub روی Add files و سپس Upload files بزنید و همهٔ فایل‌ها را منتقل کنید.
 4) نباید یک پوشه با نام نسخه بین repository و Dockerfile وجود داشته باشد.
 
 ساختار صحیح:
@@ -12,8 +12,15 @@ repository/
   requirements.lock.txt
   pyproject.toml
   main.py
-  builtin_sources/
+  builtin_sources.bundle.part01
+  builtin_sources.bundle.part02
+  builtin_sources.bundle.part03
+  builtin_sources.bundle.part04
+  builtin_sources.bundle.part05
+  builtin_sources.bundle.part06
+  builtin_sources.bundle.part07
+  builtin_sources.bundle.part08
+  builtin_sources.bundle.part09
 
-اگر Dockerfile داخل repository/BARSAN_.../ باشد، یا Root Directory باید دقیقاً
-روی همان پوشه تنظیم شود یا فایل‌ها باید یک سطح بالاتر منتقل شوند. روش پیشنهادی
-این بسته انتقال فایل‌ها به ریشه و خالی‌گذاشتن Root Directory است.
+هر نه part باید در صفحهٔ اصلی repository دیده شوند. اندازهٔ Build Context در
+Railway باید حدود 49MB باشد؛ مقدار چندصد KB یعنی partها در GitHub ثبت نشده‌اند.

@@ -9,3 +9,13 @@ __pycache__/
 .venv/
 venv/
 *.zip
+!builtin_sources.bundle.part01
+!builtin_sources.bundle.part02
+!builtin_sources.bundle.part03
+!builtin_sources.bundle.part04
+!builtin_sources.bundle.part05
+!builtin_sources.bundle.part06
+!builtin_sources.bundle.part07
+!builtin_sources.bundle.part08
+!builtin_sources.bundle.part09
+builtin_sources.bundle.zip

@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from railway_start import configure_runtime, uvicorn_command
+from install_builtin_sources import EXPECTED_SHA256, install_from_parts
 
 
 ROOT = Path(__file__).resolve().parent
@@ -53,10 +54,16 @@ def test_docker_never_depends_on_pyproject_or_an_ignored_source():
         "requirements.lock.txt", "main.py", "ui_templates.py", "rag_engine.py",
         "deep_rag.py", "release_info.py", "source_quality.py", "provider_runtime.py",
         "runtime_guards.py", "ops_runtime.py", "ui_components.py", "barsan_cargo.py",
-        "barsan_location.py", "railway_start.py", "FAQ_TEMPLATE.csv",
-        "thinking_loader.mp4", "builtin_sources",
+        "barsan_location.py", "railway_start.py", "install_builtin_sources.py",
+        "FAQ_TEMPLATE.csv", "thinking_loader.mp4", "builtin_sources.bundle.part01",
+        "builtin_sources.bundle.part02", "builtin_sources.bundle.part03",
+        "builtin_sources.bundle.part04", "builtin_sources.bundle.part05",
+        "builtin_sources.bundle.part06", "builtin_sources.bundle.part07",
+        "builtin_sources.bundle.part08", "builtin_sources.bundle.part09",
     }
-    assert required.isdisjoint({line.strip().rstrip("/") for line in ignored})
+    normalized = {line.strip().rstrip("/") for line in ignored}
+    assert required.isdisjoint(normalized)
+    assert "COPY ./builtin_sources/" not in docker
 
 
 def test_dependency_lock_is_single_source_and_fully_pinned():
@@ -109,6 +116,8 @@ def test_sensitive_and_generated_files_are_excluded_from_context_and_git():
         assert any(rule.rstrip("/") == "__pycache__" for rule in rules)
         assert "*.py" not in rules
         assert "*.db" in content and "*.zip" in content
+        if ignore_name == ".gitignore":
+            assert all(f"!builtin_sources.bundle.part{index:02d}" in rules for index in range(1, 4))
 
 
 def test_production_image_has_no_secret_build_arguments_or_embedded_environment_file():
@@ -137,3 +146,11 @@ def test_launcher_rejects_invalid_ports_before_start(value):
 def test_launcher_rejects_filesystem_root_as_data_directory():
     with pytest.raises(RuntimeError, match="DATA_DIR"):
         configure_runtime({"DATA_DIR": "/"})
+
+
+def test_single_root_builtin_bundle_installs_and_verifies_every_source(tmp_path):
+    destination = tmp_path / "builtin_sources"
+    parts = [ROOT / f"builtin_sources.bundle.part{index:02d}" for index in range(1, 4)]
+    install_from_parts(parts, destination)
+    assert {path.name for path in destination.iterdir()} == set(EXPECTED_SHA256)
+    assert all(path.stat().st_size > 0 for path in destination.iterdir())

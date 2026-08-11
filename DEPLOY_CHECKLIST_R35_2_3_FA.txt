@@ -2,11 +2,14 @@ BARSAN R35.2.3 — Railway Final Checklist
 
 [ ] فایل‌های ZIP مستقیم در ریشهٔ repository قرار گرفته‌اند.
 [ ] Dockerfile، railway.json، requirements.lock.txt، pyproject.toml و main.py کنار هم هستند.
+[ ] هر نه فایل builtin_sources.bundle.part01 تا part09 در ریشهٔ GitHub دیده می‌شوند.
+[ ] هیچ‌کدام از نه part بزرگ‌تر از 6MB نیست.
 [ ] Root Directory سرویس خالی است (repository root)؛ مسیر پوشهٔ نسخهٔ قدیمی تنظیم نشده است.
 [ ] متغیر RAILWAY_DOCKERFILE_PATH قدیمی حذف شده است.
 [ ] Build Command و Start Command دستی در Dashboard خالی هستند.
 [ ] Deployment Details نشان می‌دهد Dockerfile ریشه مصرف شده است.
 [ ] Build log هیچ COPY مربوط به pyproject.toml نشان نمی‌دهد.
+[ ] Build log شامل BARSAN_BUILTIN_SOURCES_OK files=6 است.
 [ ] Volume با Mount Path=/data متصل است.
 [ ] Replica برابر 1 است.
 [ ] JWT_SECRET فقط در Railway Variables و حداقل 32 کاراکتر است.
@@ -19,4 +22,3 @@ BARSAN R35.2.3 — Railway Final Checklist
 [ ] /healthz پاسخ 200 و status=ok می‌دهد.
 [ ] /readyz پاسخ 200 و status=ready می‌دهد.
 [ ] Build Cache قدیمی پیش از نخستین Deploy این نسخه پاک شده است.
-

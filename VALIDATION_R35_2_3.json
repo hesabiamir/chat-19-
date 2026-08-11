@@ -5,18 +5,22 @@
   "dockerfile_path": "Dockerfile",
   "docker_copy_pyproject": false,
   "docker_copy_sources_verified": true,
+  "directory_copy_in_dockerfile": false,
+  "github_web_upload_parts_under_25mb": 9,
+  "github_api_upload_parts_at_most_6mb": 9,
+  "builtin_bundle_multi_level_sha256": "PASS",
   "pytest": {
     "status": "PASS",
-    "tests": 192,
-    "passed": 191,
+    "tests": 193,
+    "passed": 192,
     "skipped": 1,
     "skip_reason": "fcntl replica-lock assertion is Linux-only; Railway runs Linux"
   },
   "source_audit": {
     "status": "PASS",
-    "python_files": 18,
-    "python_lines": 14260,
-    "ast_nodes": 126875,
+    "python_files": 19,
+    "python_lines": 14353,
+    "ast_nodes": 127566,
     "json_files": 18,
     "environment_variables_referenced": 267,
     "missing_from_env_example": 0,
@@ -38,4 +42,3 @@
   "docker_engine_build": "NOT_EXECUTED_DOCKER_UNAVAILABLE",
   "docker_ci_gate": "CONFIGURED_IN_GITHUB_ACTIONS"
 }
-

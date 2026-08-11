@@ -1,0 +1,8 @@
+from __future__ import annotations
+
+APP_VERSION = "35.2.3"
+RELEASE_ID = "R35_2_3_PREDEPLOY_OVERRIDE"
+ASSET_VERSION = "R35_2"
+INGESTION_VERSION = 6
+ANSWER_CACHE_NAMESPACE_DEFAULT = "barsan-r35-2-operational-reliability"
+SCHEMA_REVISION = "r35.2.0-001"

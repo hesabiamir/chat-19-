@@ -1,0 +1,929 @@
+{
+  "version": "R32",
+  "sources": [
+    {
+      "source_key": "01",
+      "filename": "01_BARSAN_شناخت_ناوگان_بار_خدمات_استخدام.pdf",
+      "title": "شناخت ناوگان، بار، خدمات و استخدام",
+      "sha256": "ae291f69cd64d20f2f2240dcb9c1f6b36ad3de0cfa464a38af47f652b45dbf6d",
+      "page_count": 35,
+      "image_count": 19,
+      "keywords": [
+        "ناوگان",
+        "پیکان",
+        "نیسان",
+        "خاور",
+        "بارگیری",
+        "ظرفیت",
+        "اضافه بار",
+        "باسکول",
+        "بیمه",
+        "کارگری",
+        "باربری",
+        "استخدام"
+      ],
+      "topic_priority": 20,
+      "pages": [
+        {
+          "page_number": 1,
+          "text_sha256": "745e0c6447bc1ed5d498d82184109a1bb976873b18819c9abccbfeff3c8b1110",
+          "characters": 1069,
+          "nonempty_lines": 41,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 2,
+          "text_sha256": "3eacaa4df0e6cdab976eddb2819d4b781da87c409ec3a39a67581acd1eb5a350",
+          "characters": 865,
+          "nonempty_lines": 29,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 3,
+          "text_sha256": "9f7f5417ad080cd9f0ae7f869782e7eafdef09829215a6e6b31a721e981fafe2",
+          "characters": 101,
+          "nonempty_lines": 5,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 4,
+          "text_sha256": "34b698dc041e7aec7c848783a9f0a67ccea5d36ebae2386d774065df7bca99a1",
+          "characters": 1243,
+          "nonempty_lines": 101,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 5,
+          "text_sha256": "02ddf2fba745263315c64a708c08777b5598fa55c3d6f9fd2f3bae8b8adb16c9",
+          "characters": 1246,
+          "nonempty_lines": 103,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 6,
+          "text_sha256": "438a0830403f1bcec113b7038598aa62553654ae257d4660f763f889396d2d7e",
+          "characters": 1077,
+          "nonempty_lines": 43,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 7,
+          "text_sha256": "873ab8e29520fac46f3fa6b55ffad2617778e3d217bacd54f6edd01b3fe75510",
+          "characters": 465,
+          "nonempty_lines": 14,
+          "images": 0,
+          "requires_vision": true
+        },
+        {
+          "page_number": 8,
+          "text_sha256": "258b46b2c7cc725db485e31a84e8ac15dde6d5d9d29d56282f52b99f03f06598",
+          "characters": 418,
+          "nonempty_lines": 16,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 9,
+          "text_sha256": "dd15d7360c576f0a7b605bb7d7ad9d8bd563851ae5abd13e26bb0be3e082906d",
+          "characters": 19,
+          "nonempty_lines": 2,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 10,
+          "text_sha256": "ed55d8d805add267204c78a3813a1ef2cce5bc49cfd620e18d73f5ff0c704178",
+          "characters": 887,
+          "nonempty_lines": 25,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 11,
+          "text_sha256": "a88e6e6afd73c4bed4b64022b054a600f803af716f0e24c8a0fd9cd6a6718b24",
+          "characters": 400,
+          "nonempty_lines": 16,
+          "images": 0,
+          "requires_vision": true
+        },
+        {
+          "page_number": 12,
+          "text_sha256": "1fee6082821fdc12b3594e8049368f3d6aa6144e052355ebcf76aabfe3a06b26",
+          "characters": 937,
+          "nonempty_lines": 26,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 13,
+          "text_sha256": "6822d46452343002ba91080c66f75447e988a5612da3c7a2019d2638455a9e76",
+          "characters": 346,
+          "nonempty_lines": 9,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 14,
+          "text_sha256": "94b069a1e64894ec4ca085ed3f7b2d77e9fe711e3ebe8de25d3c14cfd62cb02f",
+          "characters": 1852,
+          "nonempty_lines": 120,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 15,
+          "text_sha256": "61e0f914bc4bf735c2b2cd46d91445ec26a93ba87df96611e8be07ae3b3bd00b",
+          "characters": 564,
+          "nonempty_lines": 41,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 16,
+          "text_sha256": "7dd0bd35f6ae4efb82b6d4f08c6f5c76036712263cc257fae229115d597ef8ca",
+          "characters": 1274,
+          "nonempty_lines": 77,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 17,
+          "text_sha256": "15a560b7938878ed420b770616a950f772d0ac019eb70cc0e88eff0f6e9e3afd",
+          "characters": 1727,
+          "nonempty_lines": 71,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 18,
+          "text_sha256": "49f258653afd55c2f1d7662a76b69657e5f2feedc187fc05ba09d56c79b451c4",
+          "characters": 1363,
+          "nonempty_lines": 60,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 19,
+          "text_sha256": "aeb4c2dcfeb5720d417251ae6be68198bfff768f8b44ae3f5380ebebfabecf20",
+          "characters": 1180,
+          "nonempty_lines": 34,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 20,
+          "text_sha256": "dda66c77d457650ba8d8996b8d6c0ca95797a403f72dcad90a53f028eb680f35",
+          "characters": 1712,
+          "nonempty_lines": 65,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 21,
+          "text_sha256": "507534cf6093a708188c1f10e4c8770a6c70eb35c4983e65203424ac3ff6dc87",
+          "characters": 1518,
+          "nonempty_lines": 54,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 22,
+          "text_sha256": "c0691faf67cfd1df646a3f03e0abf8b6393d7a08edcd570ddc5a5e85f4d67674",
+          "characters": 590,
+          "nonempty_lines": 29,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 23,
+          "text_sha256": "738b6faf5078ccd76db438a713c67240740f290365b2a4994df703173e3ac15c",
+          "characters": 250,
+          "nonempty_lines": 5,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 24,
+          "text_sha256": "3149975b95127a9abc4a5cc6b33d842529b8c89d15f6b92bc3398408656055e3",
+          "characters": 624,
+          "nonempty_lines": 13,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 25,
+          "text_sha256": "04eb7621b421550a63c883f0eb685edc86383e8e647d97fb75c9db603111205d",
+          "characters": 987,
+          "nonempty_lines": 35,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 26,
+          "text_sha256": "32bff2c1007baac9f5aa27f5ae317260970d1a9400a1b85d809ebd13f34db682",
+          "characters": 1433,
+          "nonempty_lines": 55,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 27,
+          "text_sha256": "b849c670cd27ea815d43361a822f27676197838e538a6f73f412bfe04c9b6546",
+          "characters": 550,
+          "nonempty_lines": 22,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 28,
+          "text_sha256": "a29ab2f09ae6dc09a31c7c8c38cc71a32758d794b3905c0e9540567b9235c9cd",
+          "characters": 1027,
+          "nonempty_lines": 51,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 29,
+          "text_sha256": "e1eca92a9b27c8a732167e0946c0de1b0b33ac976daaf9c68debd6b639d3cd4b",
+          "characters": 791,
+          "nonempty_lines": 64,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 30,
+          "text_sha256": "70526d6b886a89e94a16198484314acabff6d314d47a58a3ab3de4e0e1c478b6",
+          "characters": 1024,
+          "nonempty_lines": 37,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 31,
+          "text_sha256": "cb9a70033c9517c5761992f87ba1aef2bc132edba955b7972a04da9f56d29b17",
+          "characters": 1157,
+          "nonempty_lines": 101,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 32,
+          "text_sha256": "1cf9a1b9921cc101778ba9374b2d61a1e7bf8c3b34c2f036776ea8006eadc4c9",
+          "characters": 543,
+          "nonempty_lines": 41,
+          "images": 0,
+          "requires_vision": true
+        },
+        {
+          "page_number": 33,
+          "text_sha256": "18ddbe190ceb9f381e2cd20b585a9f0f9579c5cb0e298922d900263b45a09805",
+          "characters": 1205,
+          "nonempty_lines": 142,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 34,
+          "text_sha256": "d65c5182240a7e42d1228ed80e8a2554960dff339c076ece2708ac632ef6ab51",
+          "characters": 1632,
+          "nonempty_lines": 76,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 35,
+          "text_sha256": "397750f6af84053a044b8f35038f295d1a5faae1b5ff1d54633daa5b08090822",
+          "characters": 285,
+          "nonempty_lines": 17,
+          "images": 0,
+          "requires_vision": true
+        }
+      ]
+    },
+    {
+      "source_key": "02",
+      "filename": "02_BARSAN_عملیات_رانندگان_صف_محدودیت_جابجایی.pdf",
+      "title": "عملیات رانندگان، صف، محدودیت و جابه‌جایی",
+      "sha256": "37107a2a85688e914a6925a85ad4fe8f70988871d30581e1c4315d4527d0bc0e",
+      "page_count": 14,
+      "image_count": 6,
+      "keywords": [
+        "صف رانندگان",
+        "غیرفعال",
+        "موقعیت قدیمی",
+        "اعلام حضور",
+        "جابجایی",
+        "خروج",
+        "مرخصی",
+        "خرابی خودرو"
+      ],
+      "topic_priority": 20,
+      "pages": [
+        {
+          "page_number": 1,
+          "text_sha256": "c1e7c5c05d4645e30fdc43d0a2eb2a6fd8e1dd078af3096812f405b3f8c4304e",
+          "characters": 986,
+          "nonempty_lines": 36,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 2,
+          "text_sha256": "b4809306ca7cb1f793e6eefe48ffdaca7d5ecddabc2a341893fb3c6e830d2309",
+          "characters": 865,
+          "nonempty_lines": 29,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 3,
+          "text_sha256": "02e4cbb259235595d29268c48bd221257df8d7f6ab3dc8afeb28d5c99af68474",
+          "characters": 845,
+          "nonempty_lines": 60,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 4,
+          "text_sha256": "f27da0b396b7c5f4399c533efe1d67bc99934ccd979204028f38ee56d8198922",
+          "characters": 1659,
+          "nonempty_lines": 56,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 5,
+          "text_sha256": "137911206d449e911805d0ff6f1d4ade316586eb388e68b63534d0cce17d954e",
+          "characters": 1227,
+          "nonempty_lines": 62,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 6,
+          "text_sha256": "58d4b9c2f12546e43b8d36608a72a907ac7d738b6f3d4a5b628cedb779d3cdea",
+          "characters": 1259,
+          "nonempty_lines": 60,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 7,
+          "text_sha256": "61e6a81b1e80477064475619ed21bcfa12b37f81cfd0aa942cc87889a03ed601",
+          "characters": 1025,
+          "nonempty_lines": 81,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 8,
+          "text_sha256": "cbb5ef2c5110d25612b1833095585ac67bad9327c7afadce74b0de6b5dd385ae",
+          "characters": 194,
+          "nonempty_lines": 7,
+          "images": 0,
+          "requires_vision": true
+        },
+        {
+          "page_number": 9,
+          "text_sha256": "a73d4c327e1ff5d69e7b482894f7f4aa32a82f156adbbff4de8e450fd4a232fd",
+          "characters": 1104,
+          "nonempty_lines": 93,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 10,
+          "text_sha256": "461780e043728b9a8d07cf2163279f7810cee5e8b0d5685760822c57096111e5",
+          "characters": 1143,
+          "nonempty_lines": 41,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 11,
+          "text_sha256": "f014f14b8e5faee6f91613b0ad832218f990c5d220b2251554115ac5d9c95708",
+          "characters": 421,
+          "nonempty_lines": 21,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 12,
+          "text_sha256": "3e37277ade87d2dc3ec6ca9b7917b2c03763268234ab3337c1b9ef2250e9670d",
+          "characters": 181,
+          "nonempty_lines": 7,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 13,
+          "text_sha256": "5e3a36977f78ce766d3c5c786030c7539c526d5676c430dfdb99ce6586c12333",
+          "characters": 897,
+          "nonempty_lines": 93,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 14,
+          "text_sha256": "29dfa9b524978058d65e086c976edc91b5a2024753db578dc09b34161d9e7d91",
+          "characters": 587,
+          "nonempty_lines": 67,
+          "images": 0,
+          "requires_vision": true
+        }
+      ]
+    },
+    {
+      "source_key": "03",
+      "filename": "03_BARSAN_پشتیبانی_چرخه_سرویس_مالی_گزارشات.pdf",
+      "title": "پشتیبانی، چرخه سرویس، مالی و گزارشات",
+      "sha256": "9d5313faef1b029cdc96ef3c91c9ee13b7b5d55162a263bbc8a8e6c5d9dfb3f1",
+      "page_count": 42,
+      "image_count": 27,
+      "keywords": [
+        "سرویس",
+        "مراحل",
+        "توقف",
+        "بازنگری",
+        "اتمام",
+        "مالی",
+        "فاکتور",
+        "گزارش",
+        "رزرو",
+        "ویرایش"
+      ],
+      "topic_priority": 20,
+      "pages": [
+        {
+          "page_number": 1,
+          "text_sha256": "c2a78c7d9ab8e3df06c37a317f9336fcc154e0130908995c915c89a95c41d773",
+          "characters": 978,
+          "nonempty_lines": 38,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 2,
+          "text_sha256": "3791a088305c0e35824f3c992f25dcb15e0e243ae71e3f4822877f05f432ad47",
+          "characters": 1219,
+          "nonempty_lines": 43,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 3,
+          "text_sha256": "8fd5b392a8b784015bed693080685a53b5435f40c31ee3dec6a7bd979d14657d",
+          "characters": 1202,
+          "nonempty_lines": 34,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 4,
+          "text_sha256": "c8a1ebe25c0e0222766d72256db47c4c625eb00b441e12fb3a6ff559aa74faae",
+          "characters": 599,
+          "nonempty_lines": 18,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 5,
+          "text_sha256": "cddfca5dd4708c2ee22564580e39b32dfa880aff7c29d207dcc5750f4989bcb0",
+          "characters": 999,
+          "nonempty_lines": 50,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 6,
+          "text_sha256": "99b44ec1cfd454c5815ea798c3ae119be44aecc9b38430d3e877abd57da8f227",
+          "characters": 198,
+          "nonempty_lines": 6,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 7,
+          "text_sha256": "aad8987971ee4e823766c378f89086870eaafc710f1523daa44ca5bf0f7c616e",
+          "characters": 848,
+          "nonempty_lines": 25,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 8,
+          "text_sha256": "28b692ef9e26f7dcf5d2858c9834049c5ad613ab2a09625217fed2e493b7b86b",
+          "characters": 788,
+          "nonempty_lines": 48,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 9,
+          "text_sha256": "16f8c6b7073ff6fadc32109a9c780b1fefc7a669c39392121df6479eea4fff47",
+          "characters": 661,
+          "nonempty_lines": 141,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 10,
+          "text_sha256": "35dcba5892db254bdec9bc1fa0461bdad147d112352dd6a6eb89609814c85a46",
+          "characters": 884,
+          "nonempty_lines": 114,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 11,
+          "text_sha256": "1e874e08fa73b3febe0f27ebaa4498e328c7f7d2f6efcd35403e5e7033c5605a",
+          "characters": 507,
+          "nonempty_lines": 55,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 12,
+          "text_sha256": "dc31802026b61515c108b2a4be1712915e9ad3c58d7afad14fdaa5a2f55b8256",
+          "characters": 655,
+          "nonempty_lines": 97,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 13,
+          "text_sha256": "d8e58390fddf66451bbfd42af987084d34826eb60058b6bb37c730dd29194b2e",
+          "characters": 837,
+          "nonempty_lines": 50,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 14,
+          "text_sha256": "ffec26f9407002e070805587b5f979e48aa1175685219976ea7037147ceecb1d",
+          "characters": 1075,
+          "nonempty_lines": 105,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 15,
+          "text_sha256": "546cef1b620fd3099737cb7eba73f121ca12462f70c2c5cf85bd61aaf421abe1",
+          "characters": 317,
+          "nonempty_lines": 13,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 16,
+          "text_sha256": "4a5914e65c2dbe187520348b40a2d6ab4644bd4220a445e62eec96dac6bfcfa5",
+          "characters": 1716,
+          "nonempty_lines": 63,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 17,
+          "text_sha256": "d1c54d3dabe91971a1fe4f7ef05ecb5dbc8a371f38f99c36ccc491edf2b8f381",
+          "characters": 888,
+          "nonempty_lines": 82,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 18,
+          "text_sha256": "2ca7daba4d1475500baa35e19585b1e2995d6b4f7c9a0da82af849e0f499d980",
+          "characters": 1395,
+          "nonempty_lines": 184,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 19,
+          "text_sha256": "aeb4c2dcfeb5720d417251ae6be68198bfff768f8b44ae3f5380ebebfabecf20",
+          "characters": 1180,
+          "nonempty_lines": 34,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 20,
+          "text_sha256": "dcc4701e30324f6ab3edf4cf17acbfae0d73ed48b9ca077c46b8639056bc3396",
+          "characters": 1297,
+          "nonempty_lines": 153,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 21,
+          "text_sha256": "efa1216cad394ae362c5a273109f0253f7d7cc3567517a209a853292fdbd3bd9",
+          "characters": 1372,
+          "nonempty_lines": 135,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 22,
+          "text_sha256": "c3c4e0435d7df511c8c36e3f8a47773396a6c29facfe568e1122da744b25d502",
+          "characters": 1327,
+          "nonempty_lines": 66,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 23,
+          "text_sha256": "32bff2c1007baac9f5aa27f5ae317260970d1a9400a1b85d809ebd13f34db682",
+          "characters": 1433,
+          "nonempty_lines": 55,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 24,
+          "text_sha256": "47bf7745dd16d9421340366ddc0412d675c9fdc0fcd3bab4c6eb4e05da945f92",
+          "characters": 879,
+          "nonempty_lines": 35,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 25,
+          "text_sha256": "fb06256cffacf81a7be1aaa95351431948424aff04630dabb9e0eaaacd7ea999",
+          "characters": 703,
+          "nonempty_lines": 26,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 26,
+          "text_sha256": "7a7f3d37f405fac5ac0d02fb5a069074c79692e73d16c2ccfaca956d656e79cf",
+          "characters": 214,
+          "nonempty_lines": 10,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 27,
+          "text_sha256": "b3cb5fda2bbb75f1326eeca48f1a344170aa5bcd09eaffa7e5885c54bdfe3c06",
+          "characters": 558,
+          "nonempty_lines": 22,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 28,
+          "text_sha256": "16f8867bff699a555c9b41452a943fa19f6d8dc7e4f0941fef4df5da6867ba0a",
+          "characters": 359,
+          "nonempty_lines": 11,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 29,
+          "text_sha256": "13f2979281ce158132b0668b49a1cfdc8ddf12016116a92d25de99709ee312c2",
+          "characters": 411,
+          "nonempty_lines": 20,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 30,
+          "text_sha256": "aedb23230b4b6f65ec5adca5eeb1de63a5453144b98f4f580c97200c2d84d8fb",
+          "characters": 334,
+          "nonempty_lines": 9,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 31,
+          "text_sha256": "641cf61fccc62a61c95de5de0d7c9cf6922df4f06efa9c3531244dbd02aa471f",
+          "characters": 742,
+          "nonempty_lines": 34,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 32,
+          "text_sha256": "32568422d124be35980c248584c9a343b1115c42a6b04020bd314abf7353e9c1",
+          "characters": 492,
+          "nonempty_lines": 14,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 33,
+          "text_sha256": "ba03540a6e5ec6d54a2f55ffc34b95e7794672e044a579de016996f59e73ade5",
+          "characters": 1212,
+          "nonempty_lines": 77,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 34,
+          "text_sha256": "d4f4397889c3c0e041d806f13f15322d9605d5bd9719b62fffb193197adf418a",
+          "characters": 1234,
+          "nonempty_lines": 105,
+          "images": 2,
+          "requires_vision": true
+        },
+        {
+          "page_number": 35,
+          "text_sha256": "302ff577da79bb08faa13d0de9ef36f3971daca013036c5fd3f7b7caab247627",
+          "characters": 488,
+          "nonempty_lines": 54,
+          "images": 0,
+          "requires_vision": true
+        },
+        {
+          "page_number": 36,
+          "text_sha256": "b18a390e3995bfeb8c2e749a712fa5dfef6f6e93babd7409328556abbeb3d0a7",
+          "characters": 597,
+          "nonempty_lines": 87,
+          "images": 0,
+          "requires_vision": true
+        },
+        {
+          "page_number": 37,
+          "text_sha256": "4c8e219204bcf4bf5a7d6adce35200c5ed6ac8533a20580020c2b193272a4ae9",
+          "characters": 1170,
+          "nonempty_lines": 112,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 38,
+          "text_sha256": "12f0c3321ff79c93777fa36882366a7e6c4934d7c5a2aa9d0c5b74cc6f57adee",
+          "characters": 1468,
+          "nonempty_lines": 331,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 39,
+          "text_sha256": "b67f77bcfd9177eb2dc1327714f69998344be84f53e0b6fb6ab2dba011de3089",
+          "characters": 768,
+          "nonempty_lines": 110,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 40,
+          "text_sha256": "7d9040f14ae04e894a9efa4292948c3c4f5ce3e48c16fba5dd1c09610e2ec475",
+          "characters": 567,
+          "nonempty_lines": 100,
+          "images": 0,
+          "requires_vision": true
+        },
+        {
+          "page_number": 41,
+          "text_sha256": "858cb086b95f0545658f39100fda5be68ef0c3722490675daa0d4aeef9c394f5",
+          "characters": 586,
+          "nonempty_lines": 75,
+          "images": 0,
+          "requires_vision": true
+        },
+        {
+          "page_number": 42,
+          "text_sha256": "6e238871e1c1ec763372e9f3191a176fbe73c09b0fa6feee09c456ffc43df7c1",
+          "characters": 589,
+          "nonempty_lines": 73,
+          "images": 0,
+          "requires_vision": true
+        }
+      ]
+    },
+    {
+      "source_key": "04",
+      "filename": "04_BARSAN_فرایند_سلب_سرویس_وانت_سبک.pdf",
+      "title": "فرایند سلب سرویس وانت سبک",
+      "sha256": "f53ee58006caaa590a335ee8393420e5c6bc5bd4ee807655ba4d9db1df94689f",
+      "page_count": 12,
+      "image_count": 3,
+      "keywords": [
+        "سلب",
+        "کنسلی",
+        "لغو",
+        "کیلومتر مجاز",
+        "طرح",
+        "خرابی",
+        "تجهیزات",
+        "وانت سبک"
+      ],
+      "topic_priority": 40,
+      "pages": [
+        {
+          "page_number": 1,
+          "text_sha256": "ad87e2e89299b0d00ba4820ad3610bab46c2ec412fd1360d99ff62deedd42bc0",
+          "characters": 1130,
+          "nonempty_lines": 33,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 2,
+          "text_sha256": "1f339f2414e3c361c722d45ff60b4ce0c148f58e530edf54244aac530490994f",
+          "characters": 813,
+          "nonempty_lines": 28,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 3,
+          "text_sha256": "cf8982a3b3a8bfb451239af34c63298e102f5f70dc550e1c76f85c98fb7a6606",
+          "characters": 2146,
+          "nonempty_lines": 64,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 4,
+          "text_sha256": "80304ee23aaf21cf59acb0254dd2b87a7887939306f99aeaf5553ef514775902",
+          "characters": 1169,
+          "nonempty_lines": 69,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 5,
+          "text_sha256": "1a965165ff19b5478f45309a0fe756582a1d7f4ce2e1000b4a0b0a00d94bdedf",
+          "characters": 1570,
+          "nonempty_lines": 156,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 6,
+          "text_sha256": "0cef8e35cf188ed3c74f92f5fb85718d2bed86f6b5635dd0cc7f476c92d85c05",
+          "characters": 1350,
+          "nonempty_lines": 66,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 7,
+          "text_sha256": "fc02f244b1a63c378c9119a479f0f71cc34ba759d3ff5294e44b03347dab0d23",
+          "characters": 765,
+          "nonempty_lines": 41,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 8,
+          "text_sha256": "5c95f48e74f315216dabb05b3f7fdc1657d2bb7d9dfe070e2b0da7ea06811050",
+          "characters": 938,
+          "nonempty_lines": 49,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 9,
+          "text_sha256": "35dcba5892db254bdec9bc1fa0461bdad147d112352dd6a6eb89609814c85a46",
+          "characters": 884,
+          "nonempty_lines": 114,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 10,
+          "text_sha256": "bd0aaeb44560885c26a98bbf6351d1dd789161f91fb881c83d380b0a60ab1e63",
+          "characters": 50,
+          "nonempty_lines": 4,
+          "images": 1,
+          "requires_vision": true
+        },
+        {
+          "page_number": 11,
+          "text_sha256": "039022c7d829b1ca13ec48e55eba98f13691304de1db44433e0b5b4f24460f5c",
+          "characters": 1441,
+          "nonempty_lines": 103,
+          "images": 0,
+          "requires_vision": false
+        },
+        {
+          "page_number": 12,
+          "text_sha256": "2ed2aa48a6031095c05a420482dccb0b46745b106692f0543abde56157f6021d",
+          "characters": 541,
+          "nonempty_lines": 102,
+          "images": 1,
+          "requires_vision": true
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_files": 4,
+    "total_pages": 103,
+    "total_images": 55,
+    "total_characters": 93297,
+    "total_nonempty_lines": 6096,
+    "all_pages_hashed": true,
+    "all_pages_text_extracted": true,
+    "vision_enrichment_required_for_image_pages": true
+  }
+}

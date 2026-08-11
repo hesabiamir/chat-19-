@@ -1,0 +1,19 @@
+BARSAN R35.2.3 — Final Audited Changes
+
+1) پروژه از ZIP اصلی در محیط تازه استخراج و بازسازی شد.
+2) نام چهار PDF فارسی که در archive با encoding خراب شده بود با manifest و SHA-256 اصلی ترمیم شد.
+3) Dockerfile فقط فایل‌های runtime لازم را COPY می‌کند و هیچ وابستگی به pyproject.toml ندارد.
+4) تمام dependencyهای مستقیم و transitive در requirements.lock.txt دقیقاً pin شدند.
+5) requirements.txt فقط lock نهایی را مصرف می‌کند.
+6) .dockerignore برای حذف Git، cache، virtualenv، تست، مستندات، log، DB، ZIP و secret تقویت شد.
+7) railway.json روی Builder=DOCKERFILE، Dockerfile ریشه و Health=/healthz تثبیت شد.
+8) Procfile و nixpacks.toml حذف شدند تا تنها یک Build/Start contract وجود داشته باشد.
+9) railway_start.py اضافه شد: اعتبارسنجی PORT و DATA_DIR، نگاشت Volume، ساخت مسیرها، کاهش privilege و exec مستقیم Uvicorn.
+10) برنامه روی 0.0.0.0 و PORT تزریق‌شدهٔ Railway اجرا می‌شود.
+11) Health عمومی از دیتابیس و API خارجی مستقل است؛ /readyz دیتابیس و storage را عمیق بررسی می‌کند.
+12) خطای _cargo_context_note شامل متغیر تعریف‌نشده و دو فراخوانی با آرگومان اضافه اصلاح شد.
+13) مسیرهای ثابت /tmp در کد backup/restore و تست‌ها به tempfile قابل‌حمل تبدیل شد.
+14) .env.example با هر 267 متغیر محیطی استفاده‌شده در کد تطبیق داده شد.
+15) تست‌های خودکار برای تمام مبداهای COPY، lock، builder، launcher، PORT، Volume، proxy، health و secret اضافه شد.
+16) Release Gate شامل compile، regression، lint، security، browser، Docker build و container smoke است.
+

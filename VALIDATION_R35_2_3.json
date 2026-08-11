@@ -1,0 +1,41 @@
+{
+  "release": "R35_2_3_PREDEPLOY_OVERRIDE",
+  "version": "35.2.3",
+  "builder": "DOCKERFILE",
+  "dockerfile_path": "Dockerfile",
+  "docker_copy_pyproject": false,
+  "docker_copy_sources_verified": true,
+  "pytest": {
+    "status": "PASS",
+    "tests": 192,
+    "passed": 191,
+    "skipped": 1,
+    "skip_reason": "fcntl replica-lock assertion is Linux-only; Railway runs Linux"
+  },
+  "source_audit": {
+    "status": "PASS",
+    "python_files": 18,
+    "python_lines": 14260,
+    "ast_nodes": 126875,
+    "json_files": 18,
+    "environment_variables_referenced": 267,
+    "missing_from_env_example": 0,
+    "bare_except": 0,
+    "subprocess_shell_true": 0,
+    "dynamic_eval_exec": 0,
+    "absolute_tmp_literals": 0
+  },
+  "dependency_check": "PASS",
+  "python_compile": "PASS",
+  "frontend_validation": "PASS",
+  "ruff": "PASS",
+  "bandit_high_severity": "PASS",
+  "yaml_parse": "PASS",
+  "builtin_pdf_names_and_hashes": "PASS",
+  "runtime_startup_smoke": "PASS",
+  "healthz": "PASS_HTTP_200",
+  "readyz": "PASS_HTTP_200",
+  "docker_engine_build": "NOT_EXECUTED_DOCKER_UNAVAILABLE",
+  "docker_ci_gate": "CONFIGURED_IN_GITHUB_ACTIONS"
+}
+

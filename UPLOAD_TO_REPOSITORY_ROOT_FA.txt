@@ -1,0 +1,19 @@
+روش صحیح آپلود
+
+1) ZIP را باز کنید.
+2) همهٔ فایل‌های داخل آن را انتخاب کنید.
+3) فایل‌ها را مستقیماً در ریشهٔ repository قرار دهید.
+4) نباید یک پوشه با نام نسخه بین repository و Dockerfile وجود داشته باشد.
+
+ساختار صحیح:
+repository/
+  Dockerfile
+  railway.json
+  requirements.lock.txt
+  pyproject.toml
+  main.py
+  builtin_sources/
+
+اگر Dockerfile داخل repository/BARSAN_.../ باشد، یا Root Directory باید دقیقاً
+روی همان پوشه تنظیم شود یا فایل‌ها باید یک سطح بالاتر منتقل شوند. روش پیشنهادی
+این بسته انتقال فایل‌ها به ریشه و خالی‌گذاشتن Root Directory است.

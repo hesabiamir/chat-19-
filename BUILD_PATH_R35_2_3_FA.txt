@@ -1,0 +1,22 @@
+R35.2.3 — Final Railway Build Contract
+
+Builder: DOCKERFILE
+Dockerfile path: Dockerfile
+Build context root: repository root
+Base image: python:3.12-slim-bookworm
+Dependency source: requirements.lock.txt
+Dependency policy: all direct and transitive packages exactly pinned
+Source copy policy: explicit allowlist; no COPY . and no pyproject.toml dependency
+Build checks: pip check + py_compile
+Runtime launcher: python /app/railway_start.py
+Server: uvicorn main:app
+Host: 0.0.0.0
+Port: Railway PORT, default 8080
+Trusted proxy default: 127.0.0.1
+Privilege: root only for mounted-volume preparation, then UID/GID 10001
+Persistent data: RAILWAY_VOLUME_MOUNT_PATH or /data
+Liveness: /healthz
+Deep readiness: /readyz
+Pre-deploy: disabled
+Alternative start configs: none (no Procfile and no nixpacks.toml)
+

@@ -1,0 +1,362 @@
+{
+  "release": "R35_2_3_PREDEPLOY_OVERRIDE",
+  "version": "35.2.3",
+  "deployment_builder": "DOCKERFILE",
+  "files": [
+    {
+      "path": ".dockerignore",
+      "size": 368,
+      "sha256": "71798fef23ed12969538f0f46b2b2b655f19327c75ba8bbebb97aa61af5502f8"
+    },
+    {
+      "path": ".env.example",
+      "size": 12945,
+      "sha256": "e35bfd50a8f093bc1b2cc1813e88721d6179d2bde67ce4ddb06892286da59cab"
+    },
+    {
+      "path": ".github/workflows/release-gate.yml",
+      "size": 4498,
+      "sha256": "dbd8e53a5e2dafcd17f37cd1726a9a96cdf3978e032f2ae20d634fafc21f2c8d"
+    },
+    {
+      "path": ".gitignore",
+      "size": 98,
+      "sha256": "aa56a301e00ecf9a9a976fa0046e5748780782bc66c8095d82e1325fd7ce53d6"
+    },
+    {
+      "path": ".python-version",
+      "size": 5,
+      "sha256": "7b55f8e67b5623c4bef3fa691288da9437d79d3aba156de48d481db32ac7d16d"
+    },
+    {
+      "path": "barsan_cargo.py",
+      "size": 14008,
+      "sha256": "9190594e30bb0d78efdd1906d0242ec202aef0e6496e7d9c898b0de9820c8b25"
+    },
+    {
+      "path": "barsan_location.py",
+      "size": 19756,
+      "sha256": "2ce68712436b10f1573202a4afdf1e492be5b134588572e367cb5382ba955383"
+    },
+    {
+      "path": "BUILD_PATH_R35_2_3_FA.txt",
+      "size": 802,
+      "sha256": "45b908dcf8136bf2e5af988a96939f519d5e1c015e86f3a5d2e3337a83072904"
+    },
+    {
+      "path": "BUILTIN_SOURCE_AUDIT_R32.json",
+      "size": 29889,
+      "sha256": "6167444ca9ed91bd7ffb3043af7162ed9b019b513c27c3d740ef72ec08d875b0"
+    },
+    {
+      "path": "builtin_sources/01_BARSAN_شناخت_ناوگان_بار_خدمات_استخدام.pdf",
+      "size": 18666579,
+      "sha256": "ae291f69cd64d20f2f2240dcb9c1f6b36ad3de0cfa464a38af47f652b45dbf6d"
+    },
+    {
+      "path": "builtin_sources/02_BARSAN_عملیات_رانندگان_صف_محدودیت_جابجایی.pdf",
+      "size": 2559294,
+      "sha256": "37107a2a85688e914a6925a85ad4fe8f70988871d30581e1c4315d4527d0bc0e"
+    },
+    {
+      "path": "builtin_sources/03_BARSAN_پشتیبانی_چرخه_سرویس_مالی_گزارشات.pdf",
+      "size": 25626720,
+      "sha256": "9d5313faef1b029cdc96ef3c91c9ee13b7b5d55162a263bbc8a8e6c5d9dfb3f1"
+    },
+    {
+      "path": "builtin_sources/04_BARSAN_فرایند_سلب_سرویس_وانت_سبک.pdf",
+      "size": 2324590,
+      "sha256": "f53ee58006caaa590a335ee8393420e5c6bc5bd4ee807655ba4d9db1df94689f"
+    },
+    {
+      "path": "builtin_sources/preindex.json",
+      "size": 533931,
+      "sha256": "60bb6ef6fdd88a1f669fcd4ec32772441b0231ebdec5c8581042aaa110e15ff6"
+    },
+    {
+      "path": "builtin_sources/source_manifest.json",
+      "size": 2606,
+      "sha256": "9299608ce095adac27ded03c46cf1174897f558294de792dceba7ac9d4784e1f"
+    },
+    {
+      "path": "CHANGES_R35_2_3_FA.txt",
+      "size": 2018,
+      "sha256": "8f41732eeef29607170a937e6fd67e44a5c34a0d70c723e1e325140202bdde51"
+    },
+    {
+      "path": "deep_rag.py",
+      "size": 27622,
+      "sha256": "08a91ac149903cd3473530ecaef9df44ea6ba7a666c7ff5d9df640b1903a768e"
+    },
+    {
+      "path": "DEPLOY_CHECKLIST_R35_2_3_FA.txt",
+      "size": 1560,
+      "sha256": "436d7fb728b3775824f9d90574fec77bcac59c0b3df080090bda973cfd5041d1"
+    },
+    {
+      "path": "Dockerfile",
+      "size": 1859,
+      "sha256": "e81b4e21a992e5ac7fd6b342fe493bfef6114af1686f6157cc4c60586dce36be"
+    },
+    {
+      "path": "docs/history/BUILTIN_SOURCE_AUDIT_R32.json",
+      "size": 29889,
+      "sha256": "6167444ca9ed91bd7ffb3043af7162ed9b019b513c27c3d740ef72ec08d875b0"
+    },
+    {
+      "path": "docs/history/BUILTIN_SOURCE_REVIEW_R32_FA.txt",
+      "size": 1969,
+      "sha256": "79bd929fb5fdcef65434efbaca284c155f6959337a803a459d595a2bf73f9a17"
+    },
+    {
+      "path": "docs/history/CHANGES_R32_1_FA.txt",
+      "size": 1152,
+      "sha256": "a2490e3923fbb35ac433b52f27212bde4f028b2551d6f59819fde64d2a78d81d"
+    },
+    {
+      "path": "docs/history/CHANGES_R33_1_FA.txt",
+      "size": 437,
+      "sha256": "d899fdbe4987e0df12d7b0ed5aba1da5723ea04a2ccdd932fa77e4ac3d73c439"
+    },
+    {
+      "path": "docs/history/CHANGES_R33_FA.txt",
+      "size": 3077,
+      "sha256": "c18a0a4b189fe535d1b5df71a9cc6115ee817d42777853927ef82c980fc90339"
+    },
+    {
+      "path": "docs/history/CHANGES_R34_FA.txt",
+      "size": 3812,
+      "sha256": "603705da0b7cb06131f4bb7a60228e8f293d0ae9a41198a020bef7ac05fa4c2e"
+    },
+    {
+      "path": "docs/history/DEPLOY_CHECKLIST_R32_1_FA.txt",
+      "size": 642,
+      "sha256": "042360738f106cc99db3eaadf21e0c50bb9a695709af471d6a11585f894117c9"
+    },
+    {
+      "path": "docs/history/DEPLOY_CHECKLIST_R33_FA.txt",
+      "size": 984,
+      "sha256": "43826e4ce70035c6caa0085177133612e99cd9085a6d46045b9ca6bd586407ad"
+    },
+    {
+      "path": "docs/history/DEPLOY_CHECKLIST_R34_FA.txt",
+      "size": 1213,
+      "sha256": "a23e4e8bb992b50f0497cabde72763deea3b8971498764fc3aea6727ad0eeb1c"
+    },
+    {
+      "path": "docs/history/MANIFEST_R32_1.json",
+      "size": 5569,
+      "sha256": "8e1476fd4d1a604640e13956082182e08185025378f2226dc9f8582ddc5bf705"
+    },
+    {
+      "path": "docs/history/MANIFEST_R33.json",
+      "size": 6434,
+      "sha256": "2d22d747a49c81ae2c2ac4e6ed663b5b075bb2eecbceeb18716eda4434853916"
+    },
+    {
+      "path": "docs/history/MANIFEST_R34.json",
+      "size": 7407,
+      "sha256": "daadba0c3f8b4eed7465f1f01036219c9bad6d65d0f3ebc536168b152594525e"
+    },
+    {
+      "path": "docs/history/r35/BUILD_PATH_R35_FA.txt",
+      "size": 2801,
+      "sha256": "0bcdc5fd0aa6a00f5f92d698eb921dece8e153d54e9cf1911259618b21835a05"
+    },
+    {
+      "path": "docs/history/r35/CHANGES_R35_FA.txt",
+      "size": 7429,
+      "sha256": "3c1197b22cc0762086bce08e4c7d19d754bc24119bceba22e5e4c5a1a5c98fe2"
+    },
+    {
+      "path": "docs/history/r35/DEPLOY_CHECKLIST_R35_FA.txt",
+      "size": 2710,
+      "sha256": "40197931e96245b1f5334635d53bc754987dae390c21552f78b3b6dfcd7a5afe"
+    },
+    {
+      "path": "docs/history/r35/MANIFEST_R35.json",
+      "size": 9393,
+      "sha256": "0f572754267ebae97a4baf8e57e2077295a8e34b9c6989767c66b609983b0613"
+    },
+    {
+      "path": "docs/history/r35/SOURCE_DRY_RUN_R35.json",
+      "size": 3166,
+      "sha256": "128834e5c7d32ef6810777bc20ab280c34b4f26cf3b93b57effec34081aa48d9"
+    },
+    {
+      "path": "docs/history/r35/VALIDATION_R35.json",
+      "size": 1800,
+      "sha256": "be199fac51e31dddb06e54f672e59bdf8c6bea7292ed056f2faa560430de5796"
+    },
+    {
+      "path": "docs/history/README_UPLOAD_FIRST_R32_1_FA.txt",
+      "size": 279,
+      "sha256": "4c5005ce083915dbc1fa4a6060e211a1b3ac03241951bf1b1de551fdbbda011d"
+    },
+    {
+      "path": "docs/history/VALIDATION_R32_1.json",
+      "size": 395,
+      "sha256": "dbbb68a7cf83e41fcffce11314f97723921e778514b4f96ae9d33a66697c17c7"
+    },
+    {
+      "path": "docs/history/VALIDATION_R33.json",
+      "size": 705,
+      "sha256": "dccf725d1d55db847b273f43d759880a681197102a4daa442ac2cbd35107481a"
+    },
+    {
+      "path": "docs/history/VALIDATION_R34.json",
+      "size": 889,
+      "sha256": "c67f923b8c5e2cd02fd72b4cb1082c21de62cc797a48b160bd18915eb2f7ecfc"
+    },
+    {
+      "path": "e2e/barsan.spec.js",
+      "size": 3964,
+      "sha256": "16de23799b262065075ac2e061a500b91108742f3676a842a2d8ac1bf8887e87"
+    },
+    {
+      "path": "FAQ_TEMPLATE.csv",
+      "size": 389,
+      "sha256": "1209f608d8983a72719fea5db33245f2e14041a5c0d743be393c19ff5101226f"
+    },
+    {
+      "path": "main.py",
+      "size": 552667,
+      "sha256": "c53eed1e73ed0ccd4f4b61acfb4f67882c0501a05485cf9314c3fb412f1c6de9"
+    },
+    {
+      "path": "ops_runtime.py",
+      "size": 1877,
+      "sha256": "645cb50e55457e32ff0cb987f6018e6c9b6d0b1c6bce368f41b657530ecd2c4f"
+    },
+    {
+      "path": "package.json",
+      "size": 176,
+      "sha256": "7388b7af0fb56b5f0e239617b4fc85ec652084681b72159c7c9d944af17b2149"
+    },
+    {
+      "path": "playwright.config.js",
+      "size": 274,
+      "sha256": "a5db63a88dbc5c95b23f5dd7f6362dc4f07e5c08d5453d061106dca89831ae8a"
+    },
+    {
+      "path": "provider_runtime.py",
+      "size": 2033,
+      "sha256": "90ecbca7c778990efab90b0736ea0f3790c22ebd41065593e8500bcc3de244fd"
+    },
+    {
+      "path": "pyproject.toml",
+      "size": 444,
+      "sha256": "67896b7722f0b698a1d65701536622c6e0eb87e15550e10a2ba3649748ed36c4"
+    },
+    {
+      "path": "pytest.ini",
+      "size": 76,
+      "sha256": "5a731180df67ccb4e2136cd0d8e18f80e74ab8529dfb7bcf854cb187e76d5723"
+    },
+    {
+      "path": "rag_engine.py",
+      "size": 5973,
+      "sha256": "c2d5870e7fae89d2787faa99b6c2afb027a2f9588e0a9eb5a412e1db007b51f2"
+    },
+    {
+      "path": "railway.json",
+      "size": 325,
+      "sha256": "ccf117d874e412333c8d4a5a1b3a8c446bd713b4381336b41f5748f3a2006887"
+    },
+    {
+      "path": "railway_start.py",
+      "size": 4245,
+      "sha256": "da545d156d548208fe453a874f3e8ba31cfd303080b5a84e501fc7176a827f14"
+    },
+    {
+      "path": "README_R35_2_3_FA.txt",
+      "size": 1193,
+      "sha256": "9058fa3f2f6cb85afc3f4db1e7e8c3773286f135a9f143fd8627d8cf5786d84b"
+    },
+    {
+      "path": "release_info.py",
+      "size": 251,
+      "sha256": "11c5feed458b89e6591d1cd5edcdbe17c5fc9cc15d6e41a164720a5689721378"
+    },
+    {
+      "path": "requirements-dev.txt",
+      "size": 105,
+      "sha256": "8ead06618c3b3a67d126e5838770876502b18feb3addeddc6f4dde4648997908"
+    },
+    {
+      "path": "requirements.lock.txt",
+      "size": 540,
+      "sha256": "db4c0b9cae557f249947d8deedb6ab48c5b2e2ec189b2fe13d24015e8a3df930"
+    },
+    {
+      "path": "requirements.txt",
+      "size": 25,
+      "sha256": "afc73932da04b8833d5e39e973b53774f10039d995044c706eb1cd50b41938d3"
+    },
+    {
+      "path": "runtime_guards.py",
+      "size": 1809,
+      "sha256": "1663cf80fa77c37c6c5b182177c9e8c8bc536b67f8c377eee93c797bd0600e7c"
+    },
+    {
+      "path": "SOURCE_POLICY_R35_2_3.json",
+      "size": 140,
+      "sha256": "b8f618c6637390270510b718483301ff693b1fc91f38eb22fbd7d03abdf68197"
+    },
+    {
+      "path": "source_quality.py",
+      "size": 6984,
+      "sha256": "24bfbd9b418eca431a46169ce3bc5e672cf6e638f87bef1cffa9408ab866df38"
+    },
+    {
+      "path": "test_deployment.py",
+      "size": 6040,
+      "sha256": "8163d5d45053b416377610003da28c64f4be3367fe4a4f569f9dbdb5941e4b9d"
+    },
+    {
+      "path": "test_hardening.py",
+      "size": 8100,
+      "sha256": "82790385d9eda022934d7eec519b3417c0e01dc29f4ebdbc5f140347a1884341"
+    },
+    {
+      "path": "test_r352_operational.py",
+      "size": 4176,
+      "sha256": "4b5d1fa8d795b3b8095acf4ac5f8b9f78eb9500b73ef72547cd0009c8ede6036"
+    },
+    {
+      "path": "test_release.py",
+      "size": 133423,
+      "sha256": "0ca87b8ec81277fd21ab3744a29949a637b8d329186dc01e7887a74f3a2e98a3"
+    },
+    {
+      "path": "thinking_loader.mp4",
+      "size": 84658,
+      "sha256": "ff0694edcfc422080990f3766048a6f99523759189388913165e2286a767c279"
+    },
+    {
+      "path": "ui_components.py",
+      "size": 1951,
+      "sha256": "d84fbdc1a56f4c80593fbbb33b23d5970bd88bf4a0e0f1bd5e709f77417caf43"
+    },
+    {
+      "path": "ui_templates.py",
+      "size": 179780,
+      "sha256": "6a1911ec785898e8991228b5565e5927d74082510742c0fadf5e8e91e57f8014"
+    },
+    {
+      "path": "UPLOAD_TO_REPOSITORY_ROOT_FA.txt",
+      "size": 817,
+      "sha256": "43c75fea9a7e19ccf95b66e607cf9b5f3439884f4fbe097d5a151c30b53f9241"
+    },
+    {
+      "path": "validate_frontend.py",
+      "size": 3220,
+      "sha256": "ffc94b379fb5def62df8ecf872699a4eeb5d073ebacc773d38fe0900e361db86"
+    },
+    {
+      "path": "VALIDATION_R35_2_3.json",
+      "size": 1139,
+      "sha256": "3eb5f6b0debe9a877af7e83e43bffd69229add06e951f0e0174541a458b0e3c3"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "release": "R35_2_3_PREDEPLOY_OVERRIDE",
+  "version": "35.2.3",
+  "private_secrets_in_source": false,
+  "static_variable_api_slots": 6
+}

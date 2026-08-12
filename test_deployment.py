@@ -108,6 +108,14 @@ def test_health_endpoint_is_liveness_only_and_readiness_remains_available():
     assert "@app.get('/readyz')" in source
 
 
+def test_retrieval_accepts_quality_gated_partial_sources():
+    source = (ROOT / "main.py").read_text(encoding="utf-8")
+    retrieval = source[source.index("def retrieve(question:"):source.index("_retrieve_document_chunks = retrieve")]
+    assert "d.status='ready'" not in retrieval
+    assert "d.status IN ('ready','partial')" in retrieval
+    assert "def _builtin_page_rescue" in retrieval
+
+
 def test_sensitive_and_generated_files_are_excluded_from_context_and_git():
     for ignore_name in (".dockerignore", ".gitignore"):
         content = (ROOT / ignore_name).read_text(encoding="utf-8")

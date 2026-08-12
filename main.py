@@ -2190,7 +2190,7 @@ def _embedding_candidate_scores(question: str, vis: list[str]) -> dict[tuple[str
         rows=db.execute(
             f'''SELECT e.document_id,e.chunk_index,e.dimensions,e.vector_blob
                 FROM chunk_embeddings e JOIN documents d ON d.id=e.document_id
-                WHERE e.model=? AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status='ready'
+                WHERE e.model=? AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status IN ('ready','partial')
                 ORDER BY e.document_id,e.chunk_index LIMIT ?''',
             (EMBEDDING_MODEL,*vis,EMBEDDING_SCAN_LIMIT),
         ).fetchall()
@@ -2216,7 +2216,7 @@ def _fact_candidates(question: str, vis: list[str]) -> dict[tuple[str,int],float
             rows=db.execute(
                 f'''SELECT f.document_id,f.chunk_index,bm25(knowledge_facts_fts) AS rank
                     FROM knowledge_facts_fts f JOIN documents d ON d.id=f.document_id
-                    WHERE knowledge_facts_fts MATCH ? AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status='ready'
+                    WHERE knowledge_facts_fts MATCH ? AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status IN ('ready','partial')
                     ORDER BY rank ASC LIMIT ?''',
                 (match,*vis,FACT_RETRIEVAL_LIMIT),
             ).fetchall()
@@ -2262,7 +2262,7 @@ def _fast_fts_probe_score(question: str, vis: list[str]) -> float:
                 f"""SELECT c.content,COALESCE(c.search_aliases,'') AS search_aliases,d.filename
                     FROM chunks_fts f JOIN chunks c ON c.document_id=f.document_id AND c.chunk_index=f.chunk_index
                     JOIN documents d ON d.id=f.document_id
-                    WHERE chunks_fts MATCH ? AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status='ready'
+                    WHERE chunks_fts MATCH ? AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status IN ('ready','partial')
                     ORDER BY bm25(chunks_fts) ASC LIMIT 12""",(match,*vis)).fetchall()
         except sqlite3.OperationalError:
             rows=[]
@@ -2304,7 +2304,7 @@ def retrieve(question: str, user: dict[str, Any] | None, integration: bool = Fal
                            d.filename AS file_name,d.visibility,bm25(chunks_fts) AS rank
                     FROM chunks_fts f JOIN chunks c ON c.document_id=f.document_id AND c.chunk_index=f.chunk_index
                     JOIN documents d ON d.id=f.document_id
-                    WHERE chunks_fts MATCH ? AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status='ready'
+                    WHERE chunks_fts MATCH ? AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status IN ('ready','partial')
                     ORDER BY rank ASC LIMIT ?""",
                 (match_expr,*vis,candidate_limit),
             ).fetchall()
@@ -2325,7 +2325,7 @@ def retrieve(question: str, user: dict[str, Any] | None, integration: bool = Fal
                                d.filename AS file_name,d.visibility,bm25(chunks_fts) AS rank
                         FROM chunks_fts f JOIN chunks c ON c.document_id=f.document_id AND c.chunk_index=f.chunk_index
                         JOIN documents d ON d.id=f.document_id
-                        WHERE chunks_fts MATCH ? AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status='ready'
+                        WHERE chunks_fts MATCH ? AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status IN ('ready','partial')
                         ORDER BY rank ASC LIMIT 10""",
                     (term_expr,*vis),
                 ).fetchall()
@@ -2342,7 +2342,7 @@ def retrieve(question: str, user: dict[str, Any] | None, integration: bool = Fal
                     FROM chunk_semantic_buckets b
                     JOIN chunks c ON c.document_id=b.document_id AND c.chunk_index=b.chunk_index
                     JOIN documents d ON d.id=b.document_id
-                    WHERE b.bucket IN ({bucket_placeholders}) AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status='ready'
+                    WHERE b.bucket IN ({bucket_placeholders}) AND d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status IN ('ready','partial')
                     GROUP BY b.document_id,b.chunk_index,c.content,c.search_aliases,c.page_start,c.page_end,c.section_title,c.chunk_type,d.filename,d.visibility
                     ORDER BY bucket_hits DESC LIMIT ?""",
                 (*query_buckets,*vis,SEMANTIC_CANDIDATE_LIMIT),
@@ -2366,7 +2366,7 @@ def retrieve(question: str, user: dict[str, Any] | None, integration: bool = Fal
                 f"""SELECT c.document_id,c.chunk_index,c.content,COALESCE(c.search_aliases,'') AS search_aliases,c.page_start,c.page_end,c.section_title,c.chunk_type,
                            d.filename AS file_name,d.visibility,0.0 AS rank
                     FROM chunks c JOIN documents d ON d.id=c.document_id
-                    WHERE ({where}) AND d.is_enabled=1 AND d.status='ready'""",
+                     WHERE ({where}) AND d.is_enabled=1 AND d.status IN ('ready','partial')""",
                 params,
             ).fetchall()
             for row in extra_rows:
@@ -2377,7 +2377,7 @@ def retrieve(question: str, user: dict[str, Any] | None, integration: bool = Fal
             fallback_rows=db.execute(
                 f"""SELECT c.document_id,c.chunk_index,c.content,COALESCE(c.search_aliases,'') AS search_aliases,c.page_start,c.page_end,c.section_title,c.chunk_type,d.filename AS file_name,d.visibility,0.0 AS rank
                     FROM chunks c JOIN documents d ON d.id=c.document_id
-                    WHERE d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status='ready'
+                     WHERE d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status IN ('ready','partial')
                     ORDER BY abs(((c.id * 1103515245) + ?) % 2147483647) LIMIT ?""",
                 (*vis,seed,min(RETRIEVAL_SCAN_LIMIT,420)),
             ).fetchall()
@@ -2468,7 +2468,7 @@ def retrieve(question: str, user: dict[str, Any] | None, integration: bool = Fal
             rows=rescue_db.execute(
                 f"""SELECT c.document_id,c.chunk_index,c.content,COALESCE(c.search_aliases,'') AS search_aliases,c.page_start,c.page_end,c.section_title,c.chunk_type,d.filename AS file_name,d.visibility
                     FROM chunks c JOIN documents d ON d.id=c.document_id
-                    WHERE d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status='ready'
+                     WHERE d.visibility IN ({placeholders}) AND d.is_enabled=1 AND d.status IN ('ready','partial')
                     ORDER BY d.is_builtin DESC,d.id,c.chunk_index LIMIT ?""",
                 (*vis,CHAT_CORPUS_RESCUE_LIMIT),
             ).fetchall()
@@ -2516,7 +2516,7 @@ def _builtin_page_rescue(question: str, vis: tuple[str, ...] | list[str], limit:
                 FROM document_pages p JOIN documents d ON d.id=p.document_id
                 WHERE d.is_builtin=1 AND d.is_enabled=1
                   AND d.visibility IN ({placeholders})
-                  AND d.status='ready'
+                  AND d.status IN ('ready','partial')
                 ORDER BY d.source_key,p.page_number""",
             tuple(vis),
         ).fetchall()

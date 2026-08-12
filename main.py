@@ -3037,7 +3037,7 @@ async def lifespan(_: FastAPI):
         _REPLICA_LOCK_HANDLE=None
 
 
-app = FastAPI(title=APP_NAME, version=APP_VERSION, description='Barsan R35.2.4: source-grounded Persian semantic reasoning, reliable retrieval and Railway production hardening', lifespan=lifespan)
+app = FastAPI(title=APP_NAME, version=APP_VERSION, description='Barsan R35.2.8: source-grounded Persian semantic reasoning, bundled PDF rescue and provider-degraded answers', lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=ALLOWED_ORIGINS, allow_credentials=True, allow_methods=['GET','POST','PUT','PATCH','DELETE','OPTIONS'], allow_headers=['Authorization','Content-Type','X-API-Key','X-Integration-Key','X-Chunk-SHA256'])
 
 

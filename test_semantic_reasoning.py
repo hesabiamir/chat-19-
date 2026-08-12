@@ -67,3 +67,11 @@ def test_expansions_never_invent_an_answer_value() -> None:
 
     assert expansions
     assert all("۴۰۰" not in value and "400" not in value for value in expansions)
+
+
+def test_strong_training_alignment_is_safe_for_direct_provider_free_answer() -> None:
+    alignment = semantic_alignment(PARAPHRASED_QUESTION, MANAGER_TRAINING)
+
+    assert alignment["score"] >= 0.62
+    assert alignment["entity_conflict"] is False
+    assert "۴۰۰" in MANAGER_TRAINING

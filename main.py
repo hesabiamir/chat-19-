@@ -7496,6 +7496,40 @@ async def _model_semantic_rerank(question: str, items: list[dict[str,Any]], *, r
         return items,_empty_usage()
 
 
+def _deterministic_source_extract(question: str, items: list[dict[str,Any]], detailed: bool=False) -> str:
+    """Return the strongest verbatim evidence when every AI provider is down."""
+    training=[x for x in items if x.get('source_type')=='training']
+    if training:
+        answer=str(training[0].get('answer') or training[0].get('content') or '').strip()
+        if answer:
+            return format_answer_for_mode(answer,detailed)
+    candidates=[]
+    for item in items[:10]:
+        text=sanitize_answer_text(str(item.get('content') or ''))
+        if not text:
+            continue
+        # Sliding windows keep OCR lines such as «خاور / 300 / هزار تومان»
+        # together, while sentence candidates favor concise natural excerpts.
+        compact=re.sub(r'\s+',' ',text).strip()
+        fragments=[x.strip() for x in re.split(r'(?<=[.!؟؛])\s+',compact) if 12<=len(x.strip())<=700]
+        fragments.extend(compact[start:start+520] for start in range(0,max(1,len(compact)-120),220))
+        for fragment in fragments[:160]:
+            domain=semantic_alignment(question,fragment)
+            score=_retrieval_score(question,fragment,str(item.get('file_name') or ''))
+            if domain['matched_categories']>=2 and not domain['entity_conflict']:
+                score+=0.18*float(domain['score'])
+            if any(x in normalize_text(question) for x in ('هزینه','مبلغ','قیمت','چقدر','چند')) and re.search(r'\d|[۰-۹]',fragment):
+                score+=0.10
+            candidates.append((score,fragment,str(item.get('file_name') or 'منبع سازمانی')))
+    if not candidates:
+        return 'منبع مرتبط پیدا شد، اما متن قابل ارائه‌ای از آن استخراج نشد.'
+    _score,fragment,source=max(candidates,key=lambda x:x[0])
+    fragment=fragment.strip(' -–—،؛')
+    if len(fragment)>650 and not detailed:
+        fragment=fragment[:650].rsplit(' ',1)[0].rstrip()+'…'
+    return f"بر اساس «{source}»: {fragment}"
+
+
 async def ask_ai(question: str, context_items: list[dict[str, Any]], detailed: bool = False, route: str = 'standard', memory: str = '') -> tuple[str, dict[str, Any]]:
     if not context_items:
         return "پاسخ این پرسش در منابع و آموزش‌های فعال موجود نیست.", _empty_usage()
@@ -7518,7 +7552,8 @@ async def ask_ai(question: str, context_items: list[dict[str, Any]], detailed: b
     if not training_items and query_plan.complexity>=MODEL_SEMANTIC_RERANK_MIN_COMPLEXITY:
         document_items,rerank_usage=await _model_semantic_rerank(question,document_items,route=route)
 
-    if DIRECT_TRAINING_ANSWER_ENABLED and training_items and training_items[0]["score"] >= DIRECT_TRAINING_MIN_SCORE and not _requires_context_synthesis(question):
+    top_training_domain=float(training_items[0].get('domain_alignment_score') or 0.0) if training_items else 0.0
+    if DIRECT_TRAINING_ANSWER_ENABLED and training_items and training_items[0]["score"] >= DIRECT_TRAINING_MIN_SCORE and (not _requires_context_synthesis(question) or top_training_domain>=0.62):
         canonical_answer = str(training_items[0]["answer"]).strip()
         if detailed or len(canonical_answer) <= AI_DEFAULT_MAX_ANSWER_CHARS * 2:
             answer = format_answer_for_mode(canonical_answer, detailed)
@@ -7600,7 +7635,13 @@ async def ask_ai(question: str, context_items: list[dict[str, Any]], detailed: b
 
     messages = [{"role":"system","content":system_prompt},{"role":"user","content":user_prompt}]
     max_tokens = active_max_completion_tokens(detailed)
-    answer, first_usage, finish_reason = await _generate_ai_text(messages,max_tokens=max_tokens,temperature=active_temperature(),route=route)
+    try:
+        answer, first_usage, finish_reason = await _generate_ai_text(messages,max_tokens=max_tokens,temperature=active_temperature(),route=route)
+    except RuntimeError:
+        answer=_deterministic_source_extract(question,selected or context_items,detailed)
+        confidence,confidence_parts=evidence_confidence(query_plan,selected or context_items,rule_map,verification_status='deterministic_verified')
+        usage=_empty_usage();usage.update({'model_route':'source_extractive_provider_fallback','provider_label':'Barsan bundled knowledge','model':'barsan-source-extractive-fallback-zero-token','verification_status':'deterministic_verified','evidence_confidence':confidence,'confidence_parts':confidence_parts,'deep_query_plan':query_plan.as_dict()})
+        return answer,usage
     total_usage = _empty_usage(); _add_usage(total_usage,rerank_usage); _add_usage(total_usage,first_usage) 
 
     continuation_rounds = 0

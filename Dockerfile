@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1
-# BARSAN R35.2.3 — audited Railway production image
+# BARSAN R35.2.4 — semantic source reasoning + audited Railway image
 FROM python:3.12-slim-bookworm
 
-ARG APP_VERSION=35.2.3
+ARG APP_VERSION=35.2.4
 LABEL org.opencontainers.image.title="Barsan AI Chatbot"
 LABEL org.opencontainers.image.version="${APP_VERSION}"
-LABEL barsan.build.marker="BARSAN_R35_2_3_BUILD"
+LABEL barsan.build.marker="BARSAN_R35_2_4_BUILD"
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -34,7 +34,7 @@ RUN python /app/install_builtin_sources.py /app/builtin_sources /app/builtin_sou
     && chown -R 10001:10001 /app /data \
     && chmod 0700 /data /data/uploads /data/upload-sessions /data/backups \
     && echo "=== BARSAN_R35_BUILD_OK ===" \
-    && echo "=== BARSAN_R35_2_3_BUILD_OK ==="
+    && echo "=== BARSAN_R35_2_4_BUILD_OK ==="
 
 EXPOSE 8080
 ENTRYPOINT ["python", "/app/railway_start.py"]

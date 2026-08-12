@@ -46,7 +46,16 @@ from openpyxl.styles import Alignment, Font, PatternFill, Border, Side
 from pydantic import BaseModel, EmailStr, Field
 from pypdf import PdfReader
 from rag_engine import cosine_similarity, extract_structured_facts, pack_vector, rerank_hybrid_candidates, unpack_vector
-from deep_rag import analyze_query, merge_multiretrieval, semantic_rerank_candidates, build_rule_exception_map, format_rule_map_for_prompt, evidence_confidence
+from deep_rag import (
+    analyze_query,
+    build_rule_exception_map,
+    canonical_domain_concepts,
+    evidence_confidence,
+    format_rule_map_for_prompt,
+    merge_multiretrieval,
+    semantic_alignment,
+    semantic_rerank_candidates,
+)
 from barsan_cargo import calculate_cargo_fit, format_cargo_result
 from barsan_location import extract_location_query, format_location_answer, lookup_neshan, normalize_location_text
 from release_info import APP_VERSION, RELEASE_ID, ASSET_VERSION, INGESTION_VERSION, ANSWER_CACHE_NAMESPACE_DEFAULT, SCHEMA_REVISION
@@ -1090,7 +1099,7 @@ _PERSIAN_STOPWORDS = {
     "شما", "ما", "لطفا", "لطفاً", "درباره", "مورد", "بگو", "کن", "کرد", "آیا", "روی", "تا",
 }
 _SEARCH_ALIASES = {
-    "لغو": "کنسلی", "لغوی": "کنسلی", "جریمه": "کنسلی", "بازپرداخت": "استرداد",
+    "لغو": "کنسلی", "لغوی": "کنسلی", "کنسل": "کنسلی", "کنسله": "کنسلی", "جریمه": "کنسلی", "بازپرداخت": "استرداد",
     "قیمت": "هزینه", "مبلغ": "هزینه", "بها": "هزینه", "راهنما": "آموزش",
     "ثبتنام": "ثبت نام", "نامنویسی": "ثبت نام", "پشتیبانی": "تیکت", "درخواست": "تیکت",
     # واژه‌های محاوره‌ای رایج در عملیات حمل بار
@@ -1292,7 +1301,14 @@ def _retrieval_score(question: str, content: str, file_name: str = "") -> float:
         source_bonus=0.035 if coverage>=0.35 else 0.0
     elif any(x in q_norm for x in ('مراحل سرویس','توقف','بازنگری','فاکتور','مالی','گزارشات','اتمام سرویس')) and ('03_barsan' in fn or 'پشتیبانی چرخه' in fn):
         source_bonus=0.035 if coverage>=0.35 else 0.0
-    return min(1.5, coverage * 0.72 + exact * 0.28 + phrase_bonus + filename_bonus + source_bonus)
+    lexical_score=coverage * 0.72 + exact * 0.28 + phrase_bonus + filename_bonus + source_bonus
+    domain=semantic_alignment(question,f"{file_name}\n{content}")
+    # Ontology alignment may rescue a paraphrase only when at least two
+    # independent dimensions match. A single generic concept such as «هزینه» is
+    # never enough to promote an unrelated source.
+    if domain['matched_categories']>=2 and domain['core_matches']>=1 and not domain['entity_conflict']:
+        lexical_score=max(lexical_score,0.22+0.82*float(domain['score']))
+    return min(1.5, lexical_score)
 
 def allowed_visibilities(user: dict[str, Any] | None, integration: bool = False) -> tuple[str, ...]:
     if integration or user is None:
@@ -2960,7 +2976,7 @@ async def lifespan(_: FastAPI):
         _REPLICA_LOCK_HANDLE=None
 
 
-app = FastAPI(title=APP_NAME, version=APP_VERSION, description='Barsan R35.2: operational reliability, safe restore, embed/integration compatibility and production workflow hardening', lifespan=lifespan)
+app = FastAPI(title=APP_NAME, version=APP_VERSION, description='Barsan R35.2.4: source-grounded Persian semantic reasoning, reliable retrieval and Railway production hardening', lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=ALLOWED_ORIGINS, allow_credentials=True, allow_methods=['GET','POST','PUT','PATCH','DELETE','OPTIONS'], allow_headers=['Authorization','Content-Type','X-API-Key','X-Integration-Key','X-Chunk-SHA256'])
 
 
@@ -6133,10 +6149,10 @@ def _filter_navigation_only_items(items: list[dict[str, Any]]) -> list[dict[str,
 def _significant_tokens(*texts: str) -> set[str]:
     tokens=set()
     for text in texts:
-        for raw in normalize_text(text).split():
-            token=re.sub(r'^[^0-9A-Za-zآ-ی]+|[^0-9A-Za-zآ-ی]+$','',raw)
+        for token in search_tokens(text):
             if len(token)>=2 and token not in _TRAINING_STOPWORDS and not token.isdigit():
                 tokens.add(_TRAINING_TOKEN_ALIASES.get(token,token))
+        tokens.update(canonical_domain_concepts(text))
     return tokens
 
 
@@ -6197,19 +6213,29 @@ def retrieve_training(question: str, user: dict[str, Any] | None = None, integra
         answer_text=str(row['answer'] or '')
         intent_relevance=_retrieval_score(question,intent_text,row['topic'])
         answer_relevance=_retrieval_score(question,answer_text,row['topic'])
+        domain=semantic_alignment(question,f"{intent_text}\n{answer_text}")
         q_key=canonical_training_key(question,'')
         row_key=row['canonical_key'] or canonical_training_key(row['topic'],row['instruction'])
         key_similarity=_key_similarity(q_key,row_key)
         # Intent/topic must actually resemble the question. This prevents a generic
         # word inside an answer (for example «تمدید») from hijacking an unrelated
         # training entry, while still allowing short colloquial questions.
-        credible_intent=(intent_relevance>=0.30 or key_similarity>=0.34 or (intent_relevance>=0.22 and answer_relevance>=0.68))
+        semantic_intent=(
+            float(domain['score'])>=0.62
+            and int(domain['matched_categories'])>=2
+            and int(domain['core_matches'])>=1
+            and not bool(domain['entity_conflict'])
+        )
+        credible_intent=(intent_relevance>=0.30 or key_similarity>=0.34 or (intent_relevance>=0.22 and answer_relevance>=0.68) or semantic_intent)
         if not credible_intent:return
-        relevance=min(1.5,intent_relevance*0.68+answer_relevance*0.32+0.10*key_similarity)
+        lexical_relevance=intent_relevance*0.68+answer_relevance*0.32+0.10*key_similarity
+        semantic_relevance=(0.18*max(intent_relevance,answer_relevance)+0.92*float(domain['score'])) if semantic_intent else 0.0
+        relevance=min(1.5,max(lexical_relevance,semantic_relevance))
         if relevance<TRAINING_RELEVANCE_MIN_SCORE:return
         results.append({'source_type':'training','training_id':rid,'document_id':f"training:{rid}",
             'file_name':f"آموزش مدیریتی — {row['topic']}",'chunk_index':0,'content':row['answer'],'answer':row['answer'],
-            'priority':100,'score':round(relevance,4),'excerpt':row['answer'][:500],'effective_from':row['effective_from']})
+            'priority':100,'score':round(relevance,4),'excerpt':row['answer'][:500],'effective_from':row['effective_from'],
+            'domain_alignment_score':domain['score'],'domain_matched_categories':domain['matched_categories']})
 
     for row in candidate_rows:consider(row)
     # Rescue scan runs when FTS did not find a sufficiently strong training hit.
@@ -6243,6 +6269,9 @@ def _faq_match_score(question: str, candidate: str) -> float:
     # A short FAQ alias fully contained in the operator's wording is a strong match.
     if len(ca)>=2 and ca.issubset(qa):score=max(score,0.93)
     if len(qa)>=2 and qa.issubset(ca):score=max(score,0.90)
+    domain=semantic_alignment(question,candidate)
+    if domain['matched_categories']>=2 and domain['core_matches']>=1 and not domain['entity_conflict']:
+        score=max(score,min(0.96,0.18+0.82*float(domain['score'])))
     return score
 
 
@@ -6397,12 +6426,17 @@ def _credible_document_items(question: str, items: list[dict[str, Any]]) -> list
         c_tokens=_significant_tokens(content)
         shared=len(q_tokens & c_tokens)
         score=float(item.get('score') or 0)
+        domain=semantic_alignment(question,content)
         # Two shared meaningful concepts is strong evidence. For very short questions,
         # one concept plus a medium/high retrieval score is allowed. Very high hybrid
         # similarity can also pass when wording differs substantially.
-        credible=(shared>=2 or score>=0.72 or (len(q_tokens)<=2 and shared>=1 and score>=RETRIEVAL_MEDIUM_CONFIDENCE))
+        semantic_credible=(domain['score']>=0.58 and domain['matched_categories']>=2 and domain['core_matches']>=1 and not domain['entity_conflict'])
+        credible=(shared>=2 or score>=0.72 or semantic_credible or (len(q_tokens)<=2 and shared>=1 and score>=RETRIEVAL_MEDIUM_CONFIDENCE))
         if credible:
-            result.append(item)
+            enriched=dict(item)
+            enriched['domain_alignment_score']=domain['score']
+            enriched['domain_matched_categories']=domain['matched_categories']
+            result.append(enriched)
     return result
 
 

@@ -21,6 +21,52 @@ _VEHICLE_ALIASES: dict[str, tuple[str, ...]] = {
     'وانت': ('وانت',),
 }
 _VEHICLES = tuple(_VEHICLE_ALIASES.keys())
+
+# Domain concepts are intentionally independent from the wording used by an
+# operator.  They are used for retrieval only; they never create an answer or a
+# fact.  This makes e.g. «خاور رسیده مبدأ و سرویس کنسل شده؛ هزینه‌اش؟» align
+# with a short rule titled «کنسلی خاور» without weakening source-first safety.
+_DOMAIN_CONCEPT_ALIASES: dict[str, tuple[str, ...]] = {
+    'event:cancellation': (
+        'کنسلی', 'کنسل', 'لغو', 'لغوی', 'فسخ', 'انصراف', 'منتفی', 'باطل',
+        'سلب سرویس', 'سرویس انجام نشد', 'سرویس انجام نشده', 'عدم انجام سرویس',
+    ),
+    'request:cost': (
+        'هزینه', 'مبلغ', 'قیمت', 'تعرفه', 'بها', 'دستمزد', 'کرایه', 'جریمه',
+        'خسارت', 'چقدر', 'چقدره', 'چنده', 'تومان', 'تومن', 'ریال',
+    ),
+    'request:procedure': ('چطور', 'چگونه', 'مراحل', 'روش', 'فرایند', 'فرآیند'),
+    'state:origin_arrival': (
+        'رسیده مبدأ', 'رسیده مبدا', 'رسیدن به مبدأ', 'رسیدن به مبدا',
+        'در مبدأ', 'در مبدا', 'سر مبدأ', 'سر مبدا', 'محل بارگیری',
+        'حضور در مبدأ', 'حضور در مبدا',
+    ),
+    'state:dispatched': ('اعزام', 'حرکت کرده', 'راه افتاده', 'ارسال راننده'),
+    'topic:waiting': ('معطلی', 'انتظار', 'توقف', 'خواب خودرو', 'خواب ماشین'),
+    'topic:loading': ('بارگیری', 'بار زدن', 'بار زده', 'بارگذاری'),
+    'topic:unloading': ('تخلیه', 'بار خالی', 'خالی کردن بار'),
+    'topic:capacity': ('ظرفیت', 'تناژ', 'وزن مجاز', 'حداکثر بار', 'اضافه بار'),
+    'topic:route_deviation': ('انحراف مسیر', 'تغییر مسیر', 'خارج از مسیر'),
+    'topic:refund': ('بازپرداخت', 'استرداد', 'عودت وجه', 'برگشت پول'),
+    'topic:driver': ('راننده', 'سفیر'),
+    'topic:service': ('سرویس', 'ماموریت', 'مأموریت'),
+}
+
+_DOMAIN_QUERY_TERMS: dict[str, str] = {
+    'event:cancellation': 'کنسلی لغو سرویس',
+    'request:cost': 'هزینه مبلغ تعرفه تومان',
+    'request:procedure': 'مراحل روش فرایند',
+    'state:origin_arrival': 'رسیدن راننده به مبدأ محل بارگیری',
+    'state:dispatched': 'اعزام راننده حرکت به مبدأ',
+    'topic:waiting': 'معطلی انتظار توقف',
+    'topic:loading': 'بارگیری بار زدن',
+    'topic:unloading': 'تخلیه خالی کردن بار',
+    'topic:capacity': 'ظرفیت وزن مجاز حداکثر بار',
+    'topic:route_deviation': 'انحراف تغییر مسیر',
+    'topic:refund': 'استرداد بازپرداخت وجه',
+    'topic:driver': 'راننده سفیر',
+    'topic:service': 'سرویس حمل بار',
+}
 _RULE_MARKERS = ('باید', 'مجاز', 'ممنوع', 'لازم', 'امکان', 'قانون', 'قاعده', 'الزام', 'محدودیت')
 _CONDITION_MARKERS = ('اگر', 'در صورتی', 'در شرایط', 'به شرط', 'وقتی', 'زمانی که', 'مشروط')
 _EXCEPTION_MARKERS = ('استثنا', 'تبصره', 'مگر', 'به جز', 'به‌جز', 'فقط در')
@@ -135,6 +181,115 @@ def _entities(text: str) -> list[str]:
     return list(dict.fromkeys(c for _,c in chosen))
 
 
+def canonical_domain_concepts(text: str) -> set[str]:
+    """Return stable domain concepts found in Persian free text.
+
+    The result is safe to persist in diagnostics and contains no generated
+    knowledge. Vehicle concepts are canonicalized with the same longest-match
+    logic used by the query planner.
+    """
+    normalized = _norm(text)
+    entities = _entities(text)
+    concepts = {f'entity:{entity}' for entity in entities}
+    if any(entity.startswith('خاور ') for entity in entities):
+        concepts.add('entity:خاور')
+    if any(entity.startswith('پیکان ') for entity in entities):
+        concepts.add('entity:پیکان')
+    for concept, aliases in _DOMAIN_CONCEPT_ALIASES.items():
+        if any(_norm(alias) in normalized for alias in aliases):
+            concepts.add(concept)
+    # A monetary value in evidence is an implicit answer to a cost request even
+    # when the sentence omits the literal word «هزینه».
+    if re.search(r'(?<!\w)\d[\d.,]*(?:\s*(?:هزار|میلیون|میلیارد))?\s*(?:تومان|تومن|ریال)(?!\w)', normalized):
+        concepts.add('request:cost')
+    return concepts
+
+
+def semantic_alignment(query: str, evidence: str) -> dict[str, Any]:
+    """Measure concept alignment while guarding against entity mismatches.
+
+    Missing circumstantial context (such as already being at the origin) is a
+    small penalty, not a rejection. A conflicting explicit vehicle, however, is
+    a strong penalty. This distinction is the core of paraphrase-safe retrieval.
+    """
+    query_concepts = canonical_domain_concepts(query)
+    evidence_concepts = canonical_domain_concepts(evidence)
+    category_weights = {'entity': 0.34, 'event': 0.28, 'request': 0.18, 'topic': 0.15, 'state': 0.05}
+    categories: dict[str, tuple[set[str], set[str]]] = {}
+    for category in category_weights:
+        q_values = {x for x in query_concepts if x.startswith(f'{category}:')}
+        e_values = {x for x in evidence_concepts if x.startswith(f'{category}:')}
+        if q_values:
+            categories[category] = (q_values, e_values)
+    if not categories:
+        return {
+            'score': 0.0, 'coverage': 0.0, 'matched_categories': 0,
+            'core_matches': 0, 'entity_conflict': False,
+            'query_concepts': sorted(query_concepts),
+            'evidence_concepts': sorted(evidence_concepts),
+        }
+
+    available_weight = sum(category_weights[key] for key in categories)
+    matched_weight = 0.0
+    matched_categories = 0
+    core_matches = 0
+    for category, (q_values, e_values) in categories.items():
+        overlap = len(q_values & e_values) / max(1, len(q_values))
+        if overlap > 0:
+            matched_categories += 1
+            # An entity identifies *which* vehicle/customer; an event/topic
+            # identifies *what rule* is being asked about. Only the latter is a
+            # semantic anchor, preventing a generic «هزینه خاور» query from
+            # matching every unrelated Khavar rule that happens to contain money.
+            if category in {'event', 'topic'}:
+                core_matches += 1
+        matched_weight += category_weights[category] * overlap
+
+    query_entities = {x for x in query_concepts if x.startswith('entity:')}
+    evidence_entities = {x for x in evidence_concepts if x.startswith('entity:')}
+    entity_conflict = bool(query_entities and evidence_entities and not (query_entities & evidence_entities))
+    coverage = matched_weight / max(available_weight, 1e-9)
+    score = coverage
+    if entity_conflict:
+        score *= 0.18
+    # At least two independent dimensions (for example vehicle + event) are
+    # necessary before ontology alignment may be treated as strong evidence.
+    if matched_categories < 2:
+        score *= 0.72
+    return {
+        'score': round(max(0.0, min(1.0, score)), 5),
+        'coverage': round(max(0.0, min(1.0, coverage)), 5),
+        'matched_categories': matched_categories,
+        'core_matches': core_matches,
+        'entity_conflict': entity_conflict,
+        'query_concepts': sorted(query_concepts),
+        'evidence_concepts': sorted(evidence_concepts),
+    }
+
+
+def semantic_query_expansions(text: str, *, max_terms: int = 5) -> list[str]:
+    """Build deterministic, source-neutral search phrases for a paraphrase."""
+    concepts = canonical_domain_concepts(text)
+    entities = _entities(text)
+    terms = [_DOMAIN_QUERY_TERMS[c] for c in sorted(concepts) if c in _DOMAIN_QUERY_TERMS]
+    result: list[str] = []
+    entity_phrase = ' '.join(entities[:2]).strip()
+    if terms:
+        result.append(' '.join(x for x in (entity_phrase, ' '.join(terms)) if x).strip())
+    # Cancellation + cost is a frequent operational compound intent and should
+    # stay concise enough for both SQLite FTS and remote embedding providers.
+    if 'event:cancellation' in concepts:
+        result.append(' '.join(x for x in (entity_phrase, 'کنسلی لغو سرویس هزینه مبلغ تومان') if x).strip())
+    if 'state:origin_arrival' in concepts:
+        result.append(' '.join(x for x in (entity_phrase, 'رسیدن راننده به مبدأ محل بارگیری شرایط کنسلی') if x).strip())
+    deduped: list[str] = []
+    for value in result:
+        value = re.sub(r'\s+', ' ', value).strip()
+        if value and value != _norm(text) and value not in deduped:
+            deduped.append(value)
+    return deduped[:max(1, max_terms)]
+
+
 def _intent(text: str) -> str:
     n = _norm(text)
     if any(_norm(x) in n for x in _COMPARISON_MARKERS): return 'comparison'
@@ -212,9 +367,12 @@ def analyze_query(question: str, *, max_subqueries: int = 6) -> QueryPlan:
         if value and value not in subqueries and len(subqueries) < max_subqueries:
             subqueries.append(value)
 
+    for expanded in semantic_query_expansions(original, max_terms=3):
+        add(expanded)
     if numbers:
         add(f"{base} {' '.join(numbers[:4])} محدودیت ظرفیت")
-    if entities:
+    domain_concepts=canonical_domain_concepts(original)
+    if entities and ('topic:capacity' in domain_concepts or intent == 'limit'):
         add(f"{entity_phrase} ظرفیت وزن طول عرض ارتفاع بار")
     if 'conditional' in flags or intent == 'decision':
         add(f"{base} شرط شرایط مجاز ممنوع")
@@ -280,12 +438,16 @@ def merge_multiretrieval(
     qnums = set(plan.numbers)
     for item in merged.values():
         content = _norm(f"{item.get('file_name','')} {item.get('section_title','')} {item.get('content','')} {item.get('answer','')}")
+        domain_alignment = semantic_alignment(plan.original, content)
         coverage = int(item.get('deep_query_hits') or 0) / total_queries
         entity_hits = sum(1 for entity in plan.entities if _norm(entity) in content)
         numeric_hits = sum(1 for number in qnums if _norm(number) in content)
         item['query_coverage_score'] = round(coverage, 5)
         item['entity_alignment_score'] = round(entity_hits / max(1, len(plan.entities)), 5) if plan.entities else 0.0
         item['number_alignment_score'] = round(numeric_hits / max(1, len(qnums)), 5) if qnums else 0.0
+        item['domain_alignment_score'] = domain_alignment['score']
+        item['domain_matched_categories'] = domain_alignment['matched_categories']
+        item['domain_entity_conflict'] = domain_alignment['entity_conflict']
         item['deep_query_score'] = round(float(item.get('deep_query_score') or 0.0), 5)
         output.append(item)
     output.sort(key=lambda x: (-float(x.get('deep_query_score') or 0.0), -float(x.get('score') or 0.0)))
@@ -315,6 +477,7 @@ def semantic_rerank_candidates(plan: QueryPlan, candidates: list[dict[str, Any]]
         number_alignment = float(item.get('number_alignment_score') or 0.0)
         token_set = set(_tokens(content))
         concept_alignment = len(set(plan.concepts) & token_set) / max(1, len(set(plan.concepts)))
+        domain_alignment = semantic_alignment(plan.original, content)
         rule_bonus = 0.05 if any(x in content for x in _RULE_MARKERS) else 0.0
         exception_bonus = 0.06 if ('exception_sensitive' in plan.flags or 'limit_sensitive' in plan.flags) and any(x in content for x in _EXCEPTION_MARKERS + _LIMIT_MARKERS) else 0.0
         contradiction = 0.0
@@ -329,8 +492,15 @@ def semantic_rerank_candidates(plan: QueryPlan, candidates: list[dict[str, Any]]
             base * 0.58 + query_coverage * 0.22 + concept_alignment * 0.10 +
             entity_alignment * 0.07 + number_alignment * 0.08 + rule_bonus + exception_bonus - contradiction
         )
+        if domain_alignment['matched_categories'] >= 2 and not domain_alignment['entity_conflict']:
+            score += float(domain_alignment['score']) * 0.20
+        elif domain_alignment['entity_conflict']:
+            score -= 0.24
         item['deep_semantic_score'] = round(max(0.0, score), 5)
         item['contradiction_penalty'] = contradiction
+        item['domain_alignment_score'] = domain_alignment['score']
+        item['domain_matched_categories'] = domain_alignment['matched_categories']
+        item['domain_entity_conflict'] = domain_alignment['entity_conflict']
         rescored.append(item)
     rescored.sort(key=lambda x: (-float(x.get('deep_semantic_score') or 0.0), -float(x.get('score') or 0.0)))
 

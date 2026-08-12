@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from railway_start import configure_runtime, uvicorn_command
-from install_builtin_sources import EXPECTED_SHA256, install_from_parts
+from install_builtin_sources import EXPECTED_SHA256, PART_SHA256, install_from_parts
 
 
 ROOT = Path(__file__).resolve().parent
@@ -117,7 +117,7 @@ def test_sensitive_and_generated_files_are_excluded_from_context_and_git():
         assert "*.py" not in rules
         assert "*.db" in content and "*.zip" in content
         if ignore_name == ".gitignore":
-            assert all(f"!builtin_sources.bundle.part{index:02d}" in rules for index in range(1, 4))
+            assert all(f"!builtin_sources.bundle.part{index:02d}" in rules for index in range(1, len(PART_SHA256) + 1))
 
 
 def test_production_image_has_no_secret_build_arguments_or_embedded_environment_file():
@@ -150,7 +150,15 @@ def test_launcher_rejects_filesystem_root_as_data_directory():
 
 def test_single_root_builtin_bundle_installs_and_verifies_every_source(tmp_path):
     destination = tmp_path / "builtin_sources"
-    parts = [ROOT / f"builtin_sources.bundle.part{index:02d}" for index in range(1, 4)]
+    parts = [ROOT / f"builtin_sources.bundle.part{index:02d}" for index in range(1, len(PART_SHA256) + 1)]
     install_from_parts(parts, destination)
     assert {path.name for path in destination.iterdir()} == set(EXPECTED_SHA256)
     assert all(path.stat().st_size > 0 for path in destination.iterdir())
+    preindex = json.loads((destination / "preindex.json").read_text(encoding="utf-8"))
+    assert len(preindex.get("sources", {})) == 4
+    source_text = "\n".join(
+        str((item.get("result") or {}).get("text") or "")
+        for item in preindex["sources"].values()
+    )
+    assert "کنسلی پایه خاور" in source_text
+    assert "رسیدن به مبدا" in source_text or "رسیدن به مبدأ" in source_text

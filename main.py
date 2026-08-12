@@ -377,6 +377,8 @@ SOURCE_VERIFICATION_MAX_TOKENS = max(250, int(os.getenv("SOURCE_VERIFICATION_MAX
 BUILTIN_SOURCE_DIR = Path(__file__).resolve().parent / 'builtin_sources'
 BUILTIN_SOURCE_PREINDEX = BUILTIN_SOURCE_DIR / 'preindex.json'
 BUILTIN_SOURCE_MANIFEST = BUILTIN_SOURCE_DIR / 'source_manifest.json'
+_BUILTIN_PREINDEX_CACHE: dict[str,Any] | None = None
+_BUILTIN_PREINDEX_CACHE_LOCK = threading.Lock()
 BUILTIN_SOURCE_AUTO_INSTALL = os.getenv('BUILTIN_SOURCE_AUTO_INSTALL','true').lower() in {'1','true','yes','on'}
 BUILTIN_SOURCE_AUTO_ENRICH = os.getenv('BUILTIN_SOURCE_AUTO_ENRICH','false').lower() in {'1','true','yes','on'}
 BUILTIN_SOURCE_GLOBAL_DEFAULT = os.getenv('BUILTIN_SOURCE_GLOBAL_DEFAULT','true').lower() in {'1','true','yes','on'}
@@ -2582,6 +2584,65 @@ def _builtin_page_rescue(question: str, vis: tuple[str, ...] | list[str], limit:
         if len(out)>=int(limit or RETRIEVAL_TOP_K):
             break
     return out
+
+
+def _bundled_preindex_page_rescue(question: str, limit: int | None = None) -> list[dict[str,Any]]:
+    """Retrieve verbatim evidence from the immutable bundled PDF preindex.
+
+    This DB-independent last resort prevents a legacy disabled flag, interrupted
+    first-start migration or stale document state from hiding all four reviewed
+    booklets. It never generates an answer or invents a numeric value.
+    """
+    global _BUILTIN_PREINDEX_CACHE
+    if not BUILTIN_SOURCE_PREINDEX.is_file():
+        return []
+    with _BUILTIN_PREINDEX_CACHE_LOCK:
+        if _BUILTIN_PREINDEX_CACHE is None:
+            try:
+                value=json.loads(BUILTIN_SOURCE_PREINDEX.read_text(encoding='utf-8'))
+                _BUILTIN_PREINDEX_CACHE=value if isinstance(value,dict) else {}
+            except Exception:
+                _BUILTIN_PREINDEX_CACHE={}
+        preindex=_BUILTIN_PREINDEX_CACHE
+    sources=(preindex.get('sources') or {}) if isinstance(preindex,dict) else {}
+    if not isinstance(sources,dict):
+        return []
+    scored=[]
+    for source_key,source in sources.items():
+        if not isinstance(source,dict):
+            continue
+        filename=str(source.get('filename') or f'منبع داخلی بارسان {source_key}')
+        result=source.get('result') or {}
+        pages=(result.get('pages') or []) if isinstance(result,dict) else []
+        for page in pages:
+            if not isinstance(page,dict):
+                continue
+            text=str(page.get('combined_text') or page.get('base_text') or page.get('vision_text') or '').strip()
+            if not text:
+                continue
+            domain=semantic_alignment(question,text)
+            lexical=_retrieval_score(question,text,filename)
+            fragments=[x.strip() for x in re.split(r'[\n؟!؛]+|(?<=[.])\s+',text) if len(x.strip())>=10]
+            sentence_score=max([_retrieval_score(question,x,filename) for x in fragments[:200]] or [0.0])
+            score=max(lexical,sentence_score)
+            if domain['matched_categories']>=2 and domain['core_matches']>=1 and not domain['entity_conflict']:
+                score=max(score,0.20+0.86*float(domain['score']))
+            if score<0.28:
+                continue
+            page_number=int(page.get('page_number') or 0)
+            scored.append({
+                'source_type':'document','document_id':f'builtin-bundle:{source_key}',
+                'chunk_index':-page_number,'content':text,'file_name':filename,
+                'score':round(min(1.5,score),4),'lexical_score':round(lexical,4),
+                'sentence_score':round(sentence_score,4),'semantic_score':0.0,
+                'embedding_score':0.0,'fact_score':0.0,'numeric_score':round(_numeric_alignment_score(question,text),4),
+                'domain_alignment_score':domain['score'],'domain_matched_categories':domain['matched_categories'],
+                'page_start':page_number,'page_end':page_number,'section_title':_infer_section_title(text),
+                'chunk_type':'bundled-preindex-rescue','confidence':'high' if score>=RETRIEVAL_HIGH_CONFIDENCE else 'medium',
+                'rank':0.0,'excerpt':text[:500],
+            })
+    scored.sort(key=lambda item:(-float(item['score']),item['file_name'],int(item['page_start'] or 0)))
+    return scored[:max(1,int(limit or RETRIEVAL_TOP_K))]
 
 
 def create_conversation(user_id: int | None, external_user_id: str | None, title: str) -> str:
@@ -6542,6 +6603,20 @@ def retrieve_deep_priority_stage(question: str, user: dict[str, Any] | None, int
         best=max([float(x.get('deep_semantic_score') or x.get('score') or 0) for x in merged] or [0.0])
         if best>=max(RETRIEVAL_MIN_SCORE,RETRIEVAL_MEDIUM_CONFIDENCE*0.50):
             return 'document',merged,{'query_plan':plan.as_dict(),'deep_retrieval':True,'retrieval_queries':queries,'candidate_count':sum(len(rows) for _,rows in document_sets)}
+
+    bundled=[]
+    for query in queries:
+        bundled.extend(_bundled_preindex_page_rescue(query,limit=RETRIEVAL_TOP_K))
+    if bundled:
+        unique={}
+        for item in bundled:
+            key=(item.get('document_id'),item.get('page_start'))
+            if key not in unique or float(item.get('score') or 0)>float(unique[key].get('score') or 0):
+                unique[key]=item
+        merged=semantic_rerank_candidates(plan,list(unique.values()),top_n=RETRIEVAL_TOTAL_ITEMS)
+        merged=_credible_document_items(question,merged)
+        if merged:
+            return 'document',merged,{'query_plan':plan.as_dict(),'deep_retrieval':True,'retrieval_queries':queries,'candidate_count':len(bundled),'bundled_preindex_rescue':True}
 
     return 'none',[],{'query_plan':plan.as_dict(),'deep_retrieval':True,'retrieval_queries':queries,'candidate_count':0}
 

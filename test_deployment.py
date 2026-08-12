@@ -114,6 +114,8 @@ def test_retrieval_accepts_quality_gated_partial_sources():
     assert "d.status='ready'" not in retrieval
     assert "d.status IN ('ready','partial')" in retrieval
     assert "def _builtin_page_rescue" in retrieval
+    assert "def _bundled_preindex_page_rescue" in retrieval
+    assert "bundled_preindex_rescue" in retrieval
 
 
 def test_sensitive_and_generated_files_are_excluded_from_context_and_git():

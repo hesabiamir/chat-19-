@@ -7503,6 +7503,22 @@ def _deterministic_source_extract(question: str, items: list[dict[str,Any]], det
         answer=str(training[0].get('answer') or training[0].get('content') or '').strip()
         if answer:
             return format_answer_for_mode(answer,detailed)
+    plan=analyze_query(question,max_subqueries=2)
+    concepts=canonical_domain_concepts(question)
+    if 'event:cancellation' in concepts and 'request:cost' in concepts and plan.entities:
+        for item in items[:10]:
+            text=re.sub(r'\s+',' ',sanitize_answer_text(str(item.get('content') or ''))).strip()
+            source=str(item.get('file_name') or 'منبع سازمانی')
+            for entity in plan.entities:
+                entity_pattern=r'\s+'.join(re.escape(part) for part in entity.split())
+                patterns=(
+                    rf'کنسلی(?:\s+پایه)?\s+{entity_pattern}\s+([0-9۰-۹٠-٩]+(?:[.,][0-9۰-۹٠-٩]+)?\s*(?:هزار|میلیون|میلیارد)?\s*(?:تومان|تومن|ریال))',
+                    rf'{entity_pattern}.{{0,55}}?کنسلی.{{0,55}}?([0-9۰-۹٠-٩]+(?:[.,][0-9۰-۹٠-٩]+)?\s*(?:هزار|میلیون|میلیارد)?\s*(?:تومان|تومن|ریال))',
+                )
+                match=next((m for pattern in patterns if (m:=re.search(pattern,text,flags=re.I))),None)
+                if match:
+                    suffix=' (کمیسیون دریافت می‌شود)' if 'کمیسیون دریافت می شود' in text[match.start():match.end()+90] else ''
+                    return f"طبق «{source}»، هزینه کنسلی پایه {entity} {match.group(1)} است{suffix}."
     candidates=[]
     for item in items[:10]:
         text=sanitize_answer_text(str(item.get('content') or ''))
